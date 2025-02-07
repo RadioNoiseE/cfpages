@@ -562,11 +562,11 @@
     "math">\(\texttt{dom}(\Gamma,x:\rho)=(\texttt{dom}(\Gamma),x)\)</span>.</li>
   </ol>
   <p>Conforming with the new notion of context, we adapt the variable rule and define the <em>formation rule</em> which
-  defines a properly formed <span class="math">\(\lambda_2\)</span> type:</p>
+  defines a properly formed <span class="math">\(\lambda_2\)</span> type. We assume <span class=
+  "math">\(\Gamma\)</span> is a <span class="math">\(\lambda_2\)</span> context.</p>
   <div class="math">
-    \[\begin{array}{lc} (var)&amp;\text{$\Gamma\vdash x:\sigma$ if $\Gamma$ is a $\lambda_2$ context and
-    $x:\sigma\in\Gamma$}.\\ (form)&amp;\text{$\Gamma\vdash B:*$ if $\Gamma$ is a $\lambda_2$ context,
-    $B\in\mathbb{T}_2$ and all free type variables in $B $ are declared in $\Gamma$}. \end{array}\]
+    \[\begin{array}{lc} (var)&amp;\displaystyle\frac{x:\sigma\in\Gamma}{\Gamma\vdash x:\sigma}.\\
+    (form)&amp;\displaystyle\frac{B\in\mathbb{T}_2\quad\texttt{fv}(B)\in\Gamma}{\Gamma\vdash B:*}. \end{array}\]
   </div>
   <p>Finally, we define the legality of <span class="math">\(\lambda_2\)</span>: a term <span class="math">\(M\)</span>
   in <span class="math">\(\Lambda_{\mathbb{T}_2}\)</span> is called legal if there exists a <span class=
