@@ -97,11 +97,11 @@
               </li>
               <li>
                 <a href="#s3-3"><span class="secno">3.3</span> <span class="content">The System <span class=
-                "math">\(\lambda_2\)</span></span></a>
+                "math">\(\lambda2\)</span></span></a>
               </li>
               <li>
                 <a href="#s3-4"><span class="secno">3.4</span> <span class="content">Properties of <span class=
-                "math">\(\lambda_2\)</span></span></a>
+                "math">\(\lambda2\)</span></span></a>
               </li>
             </ul>
           </li>
@@ -484,7 +484,7 @@
   <p>In Church's <span class="math">\(\lambda_\rightarrow\)</span>, we only encounter abstraction and application on
   the term level, which is <em>first order</em>, as abstraction and application are over <em>terms</em>. In the present
   chapter, <em>second order</em> operations, or terms depending on types, are introduced.</p>
-  <p>This is called the <em>second order lambda calculus</em>, written as <span class="math">\(\lambda_2\)</span> for
+  <p>This is called the <em>second order lambda calculus</em>, written as <span class="math">\(\lambda2\)</span> for
   short.</p>
   <h3 id="s3-1">3.1. <span class="math">\(\Pi\)</span> Types</h3>
   <p>To construct a function that can handle terms of different types, we can consider an <em>arbitrary</em> type, and
@@ -511,9 +511,9 @@
   <p>The second order application rule is intuitive, that two types of arbitrary type can be interchanged. This
   abstraction rule also corresponds to our expectations, as presented in the previous section where the <span class=
   "math">\(\Pi\)</span> types are introduced.</p>
-  <h3 id="s3-3">3.3. The System <span class="math">\(\lambda_2\)</span></h3>
+  <h3 id="s3-3">3.3. The System <span class="math">\(\lambda2\)</span></h3>
   <p>To describe the complete system, we have to first extend our definition of types. The abstract syntax for
-  <span class="math">\(\lambda_2\)</span> types is <span class=
+  <span class="math">\(\lambda2\)</span> types is <span class=
   "math">\(\mathbb{T}_2=\mathbb{V}|(\mathbb{T}_2\rightarrow\mathbb{T}_2)|(\Pi\mathbb{V}:*.\mathbb{T}_2)\)</span> while
   <span class="math">\(\mathbb{V}\)</span> is the set of type variables.</p>
   <p>Then we extend our set of pre-typed lambda terms so that second order abstraction and application are allowed:</p>
@@ -545,35 +545,34 @@
     <li><em>Declaration</em>: A statement with a <em>term variable</em> or a <em>type variable</em> as subject.</li>
   </ol>
   <p>The rule that all variables must be declared before they can be used motivates the following recursive definition
-  of the <span class="math">\(\lambda_2\)</span> context, which the new definition of the <em>domain</em> of a context
+  of the <span class="math">\(\lambda2\)</span> context, which the new definition of the <em>domain</em> of a context
   is combined:</p>
   <ol>
-    <li><span class="math">\(\emptyset\)</span> is a <span class="math">\(\lambda_2\)</span> context. Its domain is the
+    <li><span class="math">\(\emptyset\)</span> is a <span class="math">\(\lambda2\)</span> context. Its domain is the
     empty list.</li>
-    <li>If <span class="math">\(\Gamma\)</span> is a <span class="math">\(\lambda_2\)</span> context, <span class=
+    <li>If <span class="math">\(\Gamma\)</span> is a <span class="math">\(\lambda2\)</span> context, <span class=
     "math">\(\alpha\in\mathbb{V}\)</span> and <span class="math">\(\alpha\notin\texttt{dom}(\Gamma)\)</span>, then
-    <span class="math">\(\Gamma,\alpha:*\)</span> is a <span class="math">\(\lambda_2\)</span> context. And
-    <span class="math">\(\texttt{dom}(\Gamma,\alpha:*)=(\texttt{dom}(\Gamma),\alpha)\)</span>.</li>
-    <li>If <span class="math">\(\Gamma\)</span> is a <span class="math">\(\lambda_2\)</span> context, if <span class=
+    <span class="math">\(\Gamma,\alpha:*\)</span> is a <span class="math">\(\lambda2\)</span> context. And <span class=
+    "math">\(\texttt{dom}(\Gamma,\alpha:*)=(\texttt{dom}(\Gamma),\alpha)\)</span>.</li>
+    <li>If <span class="math">\(\Gamma\)</span> is a <span class="math">\(\lambda2\)</span> context, if <span class=
     "math">\(\rho\in\mathbb{T}_2\)</span> such that <span class="math">\(\alpha\in\texttt{dom}(\Gamma)\)</span> for all
     free type variants <span class="math">\(\alpha\)</span> occurring in <span class="math">\(\rho\)</span> and if
     <span class="math">\(x\notin\texttt{dom}(\Gamma)\)</span>, then <span class="math">\(\Gamma,x:\rho\)</span> is a
-    <span class="math">\(\lambda_2\)</span> context. And <span class=
+    <span class="math">\(\lambda2\)</span> context. And <span class=
     "math">\(\texttt{dom}(\Gamma,x:\rho)=(\texttt{dom}(\Gamma),x)\)</span>.</li>
   </ol>
   <p>Conforming with the new notion of context, we adapt the variable rule and define the <em>formation rule</em> which
-  defines a properly formed <span class="math">\(\lambda_2\)</span> type. We assume <span class=
-  "math">\(\Gamma\)</span> is a <span class="math">\(\lambda_2\)</span> context.</p>
+  defines a properly formed <span class="math">\(\lambda2\)</span> type. We assume <span class="math">\(\Gamma\)</span>
+  is a <span class="math">\(\lambda2\)</span> context.</p>
   <div class="math">
     \[\begin{array}{lc} (var)&amp;\displaystyle\frac{x:\sigma\in\Gamma}{\Gamma\vdash x:\sigma}.\\
     (form)&amp;\displaystyle\frac{B\in\mathbb{T}_2\quad\texttt{fv}(B)\in\Gamma}{\Gamma\vdash B:*}. \end{array}\]
   </div>
-  <p>Finally, we define the legality of <span class="math">\(\lambda_2\)</span>: a term <span class="math">\(M\)</span>
+  <p>Finally, we define the legality of <span class="math">\(\lambda2\)</span>: a term <span class="math">\(M\)</span>
   in <span class="math">\(\Lambda_{\mathbb{T}_2}\)</span> is called legal if there exists a <span class=
-  "math">\(\lambda_2\)</span> context <span class="math">\(\Gamma\)</span> and a type <span class=
-  "math">\(\rho\)</span> in <span class="math">\(\mathbb{T}_2\)</span> such that <span class="math">\(\Gamma\vdash
-  m:\rho\)</span>.</p>
-  <h3 id="s3-4">3.4. Properties of <span class="math">\(\lambda_2\)</span></h3>
+  "math">\(\lambda2\)</span> context <span class="math">\(\Gamma\)</span> and a type <span class="math">\(\rho\)</span>
+  in <span class="math">\(\mathbb{T}_2\)</span> such that <span class="math">\(\Gamma\vdash m:\rho\)</span>.</p>
+  <h3 id="s3-4">3.4. Properties of <span class="math">\(\lambda2\)</span></h3>
   <p>The definition of alpha conversion is adapted and extended accommodating <span class="math">\(\Pi\)</span>
   types:</p>
   <ol>
@@ -595,6 +594,6 @@
   </ol>
   <p>Most properties for <span class="math">\(\lambda_\rightarrow\)</span> defined in the present chapter still
   applies, except the Permutation Lemma, which holds only if the permuted context is a <span class=
-  "math">\(\lambda_2\)</span> context.</p>
+  "math">\(\lambda2\)</span> context.</p>
 </body>
 </html>
