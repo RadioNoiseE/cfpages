@@ -59,27 +59,27 @@
               </li>
               <li>
                 <a href="#s2-3"><span class="secno">2.3</span> <span class="content">Derivation Rules for Church's
-                <span class="math">\(\lambda_\rightarrow\)</span></span></a>
+                <span class="math">\(\lambda_\to\)</span></span></a>
               </li>
               <li>
                 <a href="#s2-4"><span class="secno">2.4</span> <span class="content">Well-Typedness in <span class=
-                "math">\(\lambda_\rightarrow\)</span></span></a>
+                "math">\(\lambda_\to\)</span></span></a>
               </li>
               <li>
                 <a href="#s2-5"><span class="secno">2.5</span> <span class="content">Type Checking in <span class=
-                "math">\(\lambda_\rightarrow\)</span></span></a>
+                "math">\(\lambda_\to\)</span></span></a>
               </li>
               <li>
                 <a href="#s2-6"><span class="secno">2.6</span> <span class="content">Term Finding in <span class=
-                "math">\(\lambda_\rightarrow\)</span></span></a>
+                "math">\(\lambda_\to\)</span></span></a>
               </li>
               <li>
                 <a href="#s2-7"><span class="secno">2.7</span> <span class="content">General Properties of <span class=
-                "math">\(\lambda_\rightarrow\)</span></span></a>
+                "math">\(\lambda_\to\)</span></span></a>
               </li>
               <li>
                 <a href="#s2-8"><span class="secno">2.8</span> <span class="content">Reduction and <span class=
-                "math">\(\lambda_\rightarrow\)</span></span></a>
+                "math">\(\lambda_\to\)</span></span></a>
               </li>
             </ul>
           </li>
@@ -136,6 +136,18 @@
               </li>
             </ul>
           </li>
+          <li>
+            <a href="#c5"><span class="chapno">5</span> <span class="content">Type Dependent on Terms</span></a>
+            <ul class="toc">
+              <li>
+                <a href="#s5-1"><span class="secno">5.1</span> <span class="content">Derivation Rules of <span class=
+                "math">\(\lambda P\)</span></span></a>
+              </li>
+              <li>
+                <a href="#s5-2"><span class="secno">5.2</span> <span class="content">Minimal Predicate Logic</span></a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
     </nav>
@@ -168,7 +180,7 @@
   only ways to construct elements of <span class="math">\(\Lambda\)</span>. An alternative and shorter way is to define
   <span class="math">\(\Lambda\)</span> via <em>abstract syntax</em>:</p>
   <div class="math">
-    \[\Lambda=V|(\Lambda\Lambda)|(\lambda V.\Lambda).\]
+    \[\Lambda=V\mid(\Lambda\Lambda)\mid(\lambda V.\Lambda).\]
   </div>
   <p>The <em>syntactical identity</em> of two lambda terms can be denoted with the symbol <span class=
   "math">\(\equiv\)</span>.</p>
@@ -205,7 +217,7 @@
   <ol>
     <li><em>Variable</em>: <span class="math">\(\texttt{fv}(x)=\{x\}\)</span>.</li>
     <li><em>Application</em>: <span class="math">\(\texttt{fv}(MN)=\texttt{fv}(M)\cup\texttt{fv}(N)\)</span>.</li>
-    <li><em>Abstract</em>: <span class="math">\(\texttt{fv}(\lambda x.M)=\texttt{fv}(M)\backslash\{x\}\)</span>.</li>
+    <li><em>Abstract</em>: <span class="math">\(\texttt{fv}(\lambda x.M)=\texttt{fv}(M)\setminus\{x\}\)</span>.</li>
   </ol>
   <p>The lambda term is <em>closed</em> if <span class="math">\(\texttt{fv}(M)=\emptyset\)</span>. A closed set is also
   called a <em>combinator</em>. The set of all closed lambda terms is denoted by <span class=
@@ -215,10 +227,10 @@
   essential; the name is only used to express the transformation or procedure from input to output. Thus the relation
   <em>alpha conversation</em> or <em>alpha equivalence</em> is defined to describe this process formally. It's based on
   the possibility of renaming binding (and bound) variables.</p>
-  <p><span class="math">\(M^{x\rightarrow y}\)</span> denote the result of replacing every free occurrence of
-  <span class="math">\(x\)</span> in <span class="math">\(M\)</span> by <span class="math">\(y\)</span>. The relation
-  <span class="math">\(\lambda x.M=_\alpha\lambda y.M^{x\rightarrow y}\)</span> is called <em>renaming</em>.</p>
-  <p>In the renaming of <span class="math">\(\lambda x.M\)</span> to <span class="math">\(\lambda y.M^{x\rightarrow
+  <p><span class="math">\(M^{x\to y}\)</span> denote the result of replacing every free occurrence of <span class=
+  "math">\(x\)</span> in <span class="math">\(M\)</span> by <span class="math">\(y\)</span>. The relation <span class=
+  "math">\(\lambda x.M=_\alpha\lambda y.M^{x\to y}\)</span> is called <em>renaming</em>.</p>
+  <p>In the renaming of <span class="math">\(\lambda x.M\)</span> to <span class="math">\(\lambda y.M^{x\to
   y}\)</span>, it is prevented that the <em>new</em> binding variable <span class="math">\(y\)</span> binds
   <em>old</em> free <span class="math">\(y\)</span>s; and that any <em>old</em> binding <span class="math">\(y\)</span>
   binds a <em>new</em> <span class="math">\(y\)</span>.</p>
@@ -230,10 +242,10 @@
   equivalence</em>.</p>
   <h3 id="s1-5">1.5. Beta Reduction</h3>
   <ol>
-    <li><em>Basis</em>: <span class="math">\((\lambda x.M)N\rightarrow_\beta M[x:=N]\)</span>.</li>
-    <li><em>Compatibility</em>: If <span class="math">\(M\rightarrow_\beta N\)</span>, then <span class=
-    "math">\(ML\rightarrow_\beta NL\)</span>, <span class="math">\(LM\rightarrow_\beta NL\)</span> and <span class=
-    "math">\(\lambda x.M\rightarrow_\beta \lambda x.N\)</span>.</li>
+    <li><em>Basis</em>: <span class="math">\((\lambda x.M)N\to_\beta M[x:=N]\)</span>.</li>
+    <li><em>Compatibility</em>: If <span class="math">\(M\to_\beta N\)</span>, then <span class="math">\(ML\to_\beta
+    NL\)</span>, <span class="math">\(LM\to_\beta NL\)</span> and <span class="math">\(\lambda x.M\to_\beta \lambda
+    x.N\)</span>.</li>
   </ol>
   <p>The suffix <span class="math">\([x:=N]\)</span> not in lambda terms, are meant to be <em>meta-notation</em> called
   substitution, which follow:</p>
@@ -241,28 +253,28 @@
     <li><span class="math">\(x[x:=N]\equiv N\)</span>, <span class="math">\(y[x:=N]\equiv y\)</span> if <span class=
     "math">\(x\not\equiv y\)</span>.</li>
     <li><span class="math">\((PQ)[x:=N]\equiv(P[x:=N])(Q[x:=N])\)</span>.</li>
-    <li><span class="math">\((\lambda y.P)[x:=N]\equiv\lambda z.(P^{y\rightarrow z}[x:=N])\)</span>, if <span class=
-    "math">\(\lambda z.P^{y\rightarrow z}\)</span> is an alpha variant of <span class="math">\(\lambda y.P\)</span>
-    such that <span class="math">\(z\notin\texttt{fv}(N)\)</span>.</li>
+    <li><span class="math">\((\lambda y.P)[x:=N]\equiv\lambda z.(P^{y\to z}[x:=N])\)</span>, if <span class=
+    "math">\(\lambda z.P^{y\to z}\)</span> is an alpha variant of <span class="math">\(\lambda y.P\)</span> such that
+    <span class="math">\(z\notin\texttt{fv}(N)\)</span>.</li>
   </ul>
   <p>The subterm of the form <span class="math">\((\lambda x.M)N\)</span> is called a <em>redex</em> (from reducible
   expression) and subterm <span class="math">\(M[x:=N]\)</span> is called the <em>contractum</em> (of the redex).</p>
   <p>Note that in general, the substitutions <span class="math">\(M[x:=N][y:=L]\)</span> does not describe the same
   lambda term as <span class="math">\(M[y:=L][x:=N]\)</span> because of the left associativity (<span class=
   "math">\(M[x:=N][y:=L]\equiv M[y:=L][x:=N[y:=L]]\land x\notin\texttt{fv}(L)\)</span>).</p>
-  <p>We define the relation <span class="math">\(\rightarrow_\beta\)</span> to be one-step beta reduction since one
-  redex is replaced by its contractum. The further beta reduction performed after the one-step reduction can be defined
-  using <span class="math">\(\twoheadrightarrow_\beta\)</span> which generally take zero or more step. We can prove
-  that <span class="math">\(\twoheadrightarrow_\beta\)</span> is <em>reflective</em> and <em>transitive</em>.</p>
+  <p>We define the relation <span class="math">\(\to_\beta\)</span> to be one-step beta reduction since one redex is
+  replaced by its contractum. The further beta reduction performed after the one-step reduction can be defined using
+  <span class="math">\(\twoheadrightarrow_\beta\)</span> which generally take zero or more step. We can prove that
+  <span class="math">\(\twoheadrightarrow_\beta\)</span> is <em>reflective</em> and <em>transitive</em>.</p>
   <p>Similar to alpha conversation, we can define <em>beta conversation</em> or <em>beta equivalence</em>. If
   <span class="math">\(M=_\beta N\)</span> and there is an <span class="math">\(n\geq 0\)</span> and there are terms
   <span class="math">\(M_0\)</span> or <span class="math">\(M_n\)</span> such that <span class="math">\(M_0\equiv
   M\)</span>, <span class="math">\(M_n\equiv N\)</span> for all <span class="math">\(i\)</span> such that <span class=
   "math">\(0\leq i&lt;n\)</span>:</p>
   <div class="math">
-    \[M_i\rightarrow_\beta M_{i+1}\lor M_{i+1}\rightarrow_\beta M_i.\]
+    \[M_i\to_\beta M_{i+1}\lor M_{i+1}\to_\beta M_i.\]
   </div>
-  <p><span class="math">\(\twoheadrightarrow_\beta\)</span> extends <span class="math">\(\rightarrow_\beta\)</span> to
+  <p><span class="math">\(\twoheadrightarrow_\beta\)</span> extends <span class="math">\(\to_\beta\)</span> to
   multi-steps, while <span class="math">\(=_\beta\)</span> further extends <span class=
   "math">\(\twoheadrightarrow_\beta\)</span> in both directions. Thus <span class="math">\(=_\beta\)</span> is
   <em>reflective</em>, <em>symmetric</em> and <em>transitive</em>.</p>
@@ -296,8 +308,8 @@
   <p>Then we have <span class="math">\(YL\)</span> which is a fixed point of <span class="math">\(L\)</span>, since
   <span class="math">\(L(YL)=_\beta YL\)</span>, which can be shown as follows:</p>
   <div class="math">
-    \[\begin{align} YL&amp;\rightarrow_\beta(\lambda x.L(xx))(\lambda x.L(xx))\\ &amp;\rightarrow_\beta L((\lambda
-    x.L(xx))(\lambda x.L(xx)))\\ &amp;=_\beta L(YL). \end{align}\]
+    \[\begin{align} YL&amp;\to_\beta(\lambda x.L(xx))(\lambda x.L(xx))\\ &amp;\to_\beta L((\lambda x.L(xx))(\lambda
+    x.L(xx)))\\ &amp;=_\beta L(YL). \end{align}\]
   </div>
   <h2 id="c2">2. Simply Typed Lambda Calculus</h2>
   <p>In order to get a firmer hold on the desired behavior of functions, we introduce <em>types</em>. Functions are
@@ -312,18 +324,18 @@
     <li><em>Type variable</em>: If <span class="math">\(\alpha\in\mathbb{V}\)</span>, then <span class=
     "math">\(\alpha\in\mathbb{T}\)</span>.</li>
     <li><em>Arrow type</em>: If <span class="math">\(\sigma,\tau\in\mathbb{T}\)</span>, then <span class=
-    "math">\((\sigma\rightarrow\tau)\in\mathbb{T}\)</span>.</li>
+    "math">\((\sigma\to\tau)\in\mathbb{T}\)</span>.</li>
   </ol>
   <p>It can be expressed using abstract syntax as <span class=
-  "math">\(\mathbb{T}=\mathbb{V}|\mathbb{T}\rightarrow\mathbb{T}\)</span>.</p>
+  "math">\(\mathbb{T}=\mathbb{V}\mid\mathbb{T}\to\mathbb{T}\)</span>.</p>
   <p>The Greek letters <span class="math">\(\alpha,\beta,\gamma,\ldots\)</span> and variants are used for type
   variables belonging to <span class="math">\(\mathbb{V}\)</span>. Arbitrary simple types are denoted using
   <span class="math">\(\sigma,\tau,\ldots\)</span>. Their outermost parentheses may be <em>omitted</em> and for
   arrow-types, they are <em>right-associative</em>.</p>
   <p>Type variables are abstract representations of <em>basic types</em>, such as <span class="math">\(nat\)</span> for
   natural numbers or <span class="math">\(list\)</span> for lists. Arrow types represent <em>function types</em>, such
-  as <span class="math">\(nat\rightarrow real\)</span> which abstracts a function which input is a natural number and
-  the returned result is a real number.</p>
+  as <span class="math">\(nat\to real\)</span> which abstracts a function which input is a natural number and the
+  returned result is a real number.</p>
   <p>We also have <em>statements</em> which allow us to express something like <q>term <span class="math">\(M\)</span>
   has type <span class="math">\(\sigma\)</span></q> in the form <span class="math">\(M:\sigma\)</span>. We assume we
   have infinitude of variables available for each type <span class="math">\(\sigma\)</span>, thus we assume that each
@@ -331,14 +343,14 @@
   <span class="math">\(x:\tau\)</span>, then <span class="math">\(\sigma\equiv\tau\)</span>.</p>
   <p>By adding typing to the basic construction principles of lambda calculus, we have:</p>
   <ol>
-    <li><em>Application</em>: If <span class="math">\(M:\sigma\rightarrow\tau\)</span> and <span class=
+    <li><em>Application</em>: If <span class="math">\(M:\sigma\to\tau\)</span> and <span class=
     "math">\(N:\sigma\)</span>, then <span class="math">\(MN:\tau\)</span>.</li>
     <li><em>Abstraction</em>: If <span class="math">\(x:\sigma\)</span> and <span class="math">\(M:\tau\)</span>, then
-    <span class="math">\(\lambda x.M:\sigma\rightarrow\tau\)</span>.</li>
+    <span class="math">\(\lambda x.M:\sigma\to\tau\)</span>.</li>
   </ol>
   <p>There are two <em>side conditions</em> which have to be satisfied in the typing of an application <span class=
   "math">\(MN\)</span>: the left-hand side <span class="math">\(M\)</span> of the application must have a function type
-  <span class="math">\(\sigma\rightarrow\tau\)</span> while the right-hand side <span class="math">\(N\)</span> of the
+  <span class="math">\(\sigma\to\tau\)</span> while the right-hand side <span class="math">\(N\)</span> of the
   application must match with the input type <span class="math">\(\sigma\)</span>; the output type will then be
   <span class="math">\(\tau\)</span>. For abstraction <span class="math">\(\lambda x.M\)</span>, we just need the types
   of <span class="math">\(x\)</span> and <span class="math">\(M\)</span>.</p>
@@ -356,13 +368,12 @@
   "math">\(\lambda\)</span> while the types of free variables are given in a so-called <em>context</em>
   (<em>basis</em>):</p>
   <div class="math">
-    \[x:\alpha\rightarrow\alpha,y:(\alpha\rightarrow\alpha)\rightarrow\beta\vdash(\lambda z:\beta.\lambda
-    u:\gamma.z)(yx): \gamma\rightarrow\beta.\]
+    \[x:\alpha\to\alpha,y:(\alpha\to\alpha)\to\beta\vdash(\lambda z:\beta.\lambda u:\gamma.z)(yx): \gamma\to\beta.\]
   </div>
-  <h3 id="s2-3">2.3. Derivation Rules for Church's <span class="math">\(\lambda_\rightarrow\)</span></h3>
+  <h3 id="s2-3">2.3. Derivation Rules for Church's <span class="math">\(\lambda_\to\)</span></h3>
   <p>The definition of lambda terms have to be modified to incorporate type information. This new set of pre-typed
   <span class="math">\(\Lambda_\mathbb{T}\)</span> is defined by <span class=
-  "math">\(\Lambda_\mathbb{T}=V|(\Lambda_\mathbb{T}\Lambda_\mathbb{T})|(\lambda
+  "math">\(\Lambda_\mathbb{T}=V\mid(\Lambda_\mathbb{T}\Lambda_\mathbb{T})\mid(\lambda
   V:\mathbb{T}.\Lambda_\mathbb{T})\)</span>.</p>
   <p>A <em>judgment</em> has the form <span class="math">\(\Gamma\vdash M:\sigma\)</span>, with <span class=
   "math">\(\Gamma\)</span> a context and <span class="math">\(M:\sigma\)</span> a statement.</p>
@@ -373,58 +384,51 @@
     <li><em>Context</em>: a list of declarations with different subjects.</li>
   </ol>
   <p>Below we give three <em>derivation rules</em> to form a so-called <em>derivation system</em> for Church's
-  <span class="math">\(\lambda_\rightarrow\)</span> in the <em>premiss-conclusion</em> format.</p>
+  <span class="math">\(\lambda_\to\)</span> in the <em>premiss-conclusion</em> format.</p>
   <div class="math">
     \[\begin{array}{lc} (var)&amp;\displaystyle\gamma\vdash x:\sigma\ \text{if}\ x:\sigma\in\Gamma.\\
-    (appl)&amp;\displaystyle\frac{\Gamma\vdash M:\sigma\rightarrow\tau\quad\gamma\vdash N:\sigma}{\Gamma\vdash
-    MN:\tau}.\\ (abst)&amp;\displaystyle\frac{\gamma,x:\sigma\vdash M:\tau}{\Gamma\vdash\lambda
-    x:\sigma,M:\sigma\rightarrow\tau}. \end{array}\]
+    (appl)&amp;\displaystyle\frac{\Gamma\vdash M:\sigma\to\tau\quad\gamma\vdash N:\sigma}{\Gamma\vdash MN:\tau}.\\
+    (abst)&amp;\displaystyle\frac{\gamma,x:\sigma\vdash M:\tau}{\Gamma\vdash\lambda x:\sigma,M:\sigma\to\tau}.
+    \end{array}\]
   </div>
-  <p>A pre-typed term <span class="math">\(\lambda_\rightarrow\)</span> is called <em>legal</em> if there exist context
+  <p>A pre-typed term <span class="math">\(\lambda_\to\)</span> is called <em>legal</em> if there exist context
   <span class="math">\(\Gamma\)</span> and type <span class="math">\(\rho\)</span> such that <span class=
   "math">\(\Gamma\vdash M:\rho\)</span>.</p>
-  <h3 id="s2-4">2.4. Well-Typedness in <span class="math">\(\lambda_\rightarrow\)</span></h3>
+  <h3 id="s2-4">2.4. Well-Typedness in <span class="math">\(\lambda_\to\)</span></h3>
   <p>This is one of the three problems connected with judgments in type theory: to find an appropriate context and type
   if the term is indeed legal.</p>
-  <p>For example, we want to show <span class="math">\(M\equiv\lambda y:\alpha\rightarrow\beta.\lambda
-  z:\alpha.yz\)</span> is valid. Hence, our task is to find a type <span class="math">\(\rho\)</span> such that
-  <span class="math">\(\Gamma\vdash M:\rho\)</span>. First we determine the context <span class=
-  "math">\(\Gamma\)</span> which <span class="math">\(\Gamma\equiv\emptyset\)</span> suffices since there are no free
-  variables in <span class="math">\(M\)</span>. Then we need to find <span class="math">\(\rho\)</span>.</p>
+  <p>For example, we want to show <span class="math">\(M\equiv\lambda y:\alpha\to\beta.\lambda z:\alpha.yz\)</span> is
+  valid. Hence, our task is to find a type <span class="math">\(\rho\)</span> such that <span class=
+  "math">\(\Gamma\vdash M:\rho\)</span>. First we determine the context <span class="math">\(\Gamma\)</span> which
+  <span class="math">\(\Gamma\equiv\emptyset\)</span> suffices since there are no free variables in <span class=
+  "math">\(M\)</span>. Then we need to find <span class="math">\(\rho\)</span>.</p>
   <div class="math">
-    \[\begin{array}{cl} \displaystyle\frac{y:\alpha\rightarrow\beta\quad
-    z:\alpha}{y:\alpha\rightarrow\beta,z:\alpha\vdash yz:\beta}&amp;(appl)\\
-    \displaystyle\frac{y:\alpha\rightarrow\beta,z:\alpha\vdash yz:\beta}{y:\alpha\rightarrow\beta\vdash \lambda
-    z:\alpha.yz:\alpha\rightarrow\beta}&amp;(abst)\\ \displaystyle\frac{y:\alpha\rightarrow\beta\vdash\lambda
-    z:\alpha.yz:\alpha\rightarrow\beta} {\lambda y:\alpha\rightarrow\beta.\lambda
-    z:\alpha.yz:(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\beta)}&amp;(abst) \end{array}\]
+    \[\dfrac{\dfrac{\dfrac{y:\alpha\to\beta\quad z:\alpha}{y:\alpha\to\beta,z:\alpha\vdash yz:\beta}}
+    {y:\alpha\to\beta\vdash\lambda z:\alpha.yz:\alpha\to\beta}} {\lambda y:\alpha\to\beta.\lambda
+    z:\alpha.yz:(\alpha\to\beta)\to(\alpha\to\beta)}\]
   </div>
-  <p>Thus we can conclude that <span class="math">\(\lambda y.\alpha\rightarrow\beta.\lambda z:\alpha.yz\)</span> is
-  valid since we find <span class="math">\(\rho\)</span> which is <span class=
-  "math">\((\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\beta)\)</span>.</p>
-  <h3 id="s2-5">2.5. Type Checking in <span class="math">\(\lambda_\rightarrow\)</span></h3>
+  <p>Thus we can conclude that <span class="math">\(\lambda y.\alpha\to\beta.\lambda z:\alpha.yz\)</span> is valid
+  since we find <span class="math">\(\rho\)</span> which is <span class=
+  "math">\((\alpha\to\beta)\to(\alpha\to\beta)\)</span>.</p>
+  <h3 id="s2-5">2.5. Type Checking in <span class="math">\(\lambda_\to\)</span></h3>
   <p>The name type checking is straightforward, it means to check the validity of a full judgment.</p>
   <p>As an example, we can construct a derivation for <span class=
-  "math">\(x:\alpha\rightarrow\alpha,y:(\alpha\rightarrow\alpha)\rightarrow\beta \vdash(\lambda z:\beta.\lambda
-  u:\gamma.z)(yz):\gamma\rightarrow\beta\)</span>:</p>
+  "math">\(x:\alpha\to\alpha,y:(\alpha\to\alpha)\to\beta \vdash(\lambda z:\beta.\lambda
+  u:\gamma.z)(yz):\gamma\to\beta\)</span>:</p>
   <div class="math">
-    \[\begin{array}{cl} \displaystyle\frac{x:\alpha\rightarrow\alpha\quad y:(\alpha\rightarrow\alpha)\rightarrow\beta}
-    {x:\alpha\rightarrow\alpha,y:(\alpha\rightarrow\alpha)\rightarrow\beta\vdash yx:\beta}\quad \frac{z:\beta\quad
-    u:\gamma}{z:\beta,u:\gamma\vdash\lambda z:\beta.\lambda
-    u:\gamma.z:\beta\rightarrow\gamma\rightarrow\beta}&amp;(appl,abst)\\
-    \displaystyle\frac{x:\alpha\rightarrow\alpha,y:(\alpha\rightarrow\alpha)\rightarrow\beta\vdash
-    yx:\beta\&gt;\quad\&gt; z:\beta,u:\gamma\vdash\lambda z:\beta.\lambda
-    u:\gamma.z:\beta\rightarrow\gamma\rightarrow\beta} {(\lambda z:\beta.\lambda
-    u:\gamma.z)(yx):\gamma\rightarrow\beta}&amp;(appl) \end{array}\]
+    \[\dfrac{\dfrac{x:\alpha\to\alpha\quad
+    y:(\alpha\to\alpha)\to\beta}{x:\alpha\to\alpha,y:(\alpha\to\alpha)\to\beta\vdash yx:\beta}\quad \dfrac{z:\beta\quad
+    u:\gamma}{z:\beta,u:\gamma\vdash\lambda z:\beta.\lambda u:\gamma.z:\beta\to\gamma\to\beta}} {(\lambda
+    z:\beta.\lambda u:\gamma.z)(yx):\gamma\to\beta}\]
   </div>
   <p>Hence we have succeeded in giving a proper deviation of the judgment.</p>
-  <h3 id="s2-6">2.6. Term Finding in <span class="math">\(\lambda_\rightarrow\)</span></h3>
+  <h3 id="s2-6">2.6. Term Finding in <span class="math">\(\lambda_\to\)</span></h3>
   <p>This section presents the third of the general problem in type theory, namely to find an appropriate term of a
   certain type, in a certain context. A term which belongs to a certain type is called an <em>inhabitant</em> of that
   type.</p>
   <p>To find an inhabitant of a certain type, we can think of the type as <em>proposition</em>, while each inhabitant
   codes a <em>proof</em> of this proposition.</p>
-  <p>For instance, to find the term of <span class="math">\(A\rightarrow B\rightarrow A\)</span>, we can follow:</p>
+  <p>For instance, to find the term of <span class="math">\(A\to B\to A\)</span>, we can follow:</p>
   <ol>
     <li>Assume that <span class="math">\(x\)</span> is a proof of proposition <span class="math">\(A\)</span>.</li>
     <li>Also assume that <span class="math">\(y\)</span> is a proof of proposition <span class=
@@ -432,13 +436,13 @@
     <li>Then <span class="math">\(x\)</span> is still a proof of <span class="math">\(A\)</span>.</li>
     <li>So the function mapping <span class="math">\(y\)</span> to <span class="math">\(x\)</span> sends a proof of
     <span class="math">\(B\)</span> to a proof of <span class="math">\(A\)</span>, i.e., <span class="math">\(\lambda
-    y:B.x\)</span> proves the implication <span class="math">\(B\rightarrow A\)</span>.</li>
-    <li>Consequently, <span class="math">\(\lambda z:A.\lambda y:B.x\)</span> proves <span class="math">\(A\rightarrow
-    B\rightarrow A\)</span>.</li>
+    y:B.x\)</span> proves the implication <span class="math">\(B\to A\)</span>.</li>
+    <li>Consequently, <span class="math">\(\lambda z:A.\lambda y:B.x\)</span> proves <span class="math">\(A\to B\to
+    A\)</span>.</li>
   </ol>
   <p>The above process is generally called the <em>PAT-interpretation</em>, where PAT means both
   <q>propositions-as-types</q> and <q>proofs-as-terms</q>.</p>
-  <h3 id="s2-7">2.7. General Properties of <span class="math">\(\lambda_\rightarrow\)</span></h3>
+  <h3 id="s2-7">2.7. General Properties of <span class="math">\(\lambda_\to\)</span></h3>
   <p>We give a number of definitions about context below:</p>
   <ol>
     <li>If <span class="math">\(\Gamma\equiv x_1:\sigma_1,\ldots,x_n:\sigma_n\)</span>, then the <em>domain</em> of
@@ -477,31 +481,31 @@
     <li>If <span class="math">\(\Gamma\vdash x:\sigma\)</span>, then <span class=
     "math">\(x:\sigma\in\Gamma\)</span>.</li>
     <li>If <span class="math">\(\Gamma\vdash MN:\tau\)</span>, then there is a type <span class=
-    "math">\(\sigma\)</span> such that <span class="math">\(\Gamma\vdash M:\sigma\rightarrow\tau\)</span> and
-    <span class="math">\(\Gamma\vdash N:\sigma\)</span>.</li>
+    "math">\(\sigma\)</span> such that <span class="math">\(\Gamma\vdash M:\sigma\to\tau\)</span> and <span class=
+    "math">\(\Gamma\vdash N:\sigma\)</span>.</li>
     <li>If <span class="math">\(\Gamma\vdash\lambda x:\sigma.M:\rho\)</span>, then there is <span class=
     "math">\(\tau\)</span> such that <span class="math">\(\Gamma,x:\sigma\vdash M:\tau\)</span> and <span class=
-    "math">\(\rho\equiv\sigma\rightarrow\tau\)</span>.</li>
+    "math">\(\rho\equiv\sigma\to\tau\)</span>.</li>
   </ol>
   <p>It's obvious that, in order to build a legal term, its subterms should be legal too. This is the <em>Subterm
   Lemma</em>.</p>
-  <p>Another important property which applies for Church's <span class="math">\(\lambda_\rightarrow\)</span> is that, a
-  term may have <em>at most one</em> type. This ensures that the type, if exists, must be unique. Therefore we also
-  have the <em>uniqueness of types</em>.</p>
-  <h3 id="s2-8">2.8. Reduction and <span class="math">\(\lambda_\rightarrow\)</span></h3>
+  <p>Another important property which applies for Church's <span class="math">\(\lambda_\to\)</span> is that, a term
+  may have <em>at most one</em> type. This ensures that the type, if exists, must be unique. Therefore we also have the
+  <em>uniqueness of types</em>.</p>
+  <h3 id="s2-8">2.8. Reduction and <span class="math">\(\lambda_\to\)</span></h3>
   <p>In order to be able to treat substitution, an operation at the heart of beta reduction, in <span class=
-  "math">\(\lambda_\rightarrow\)</span>, we have to append type information. We then have the <em>Substitution
-  Lemma</em>: assume <span class="math">\(\Gamma',x:\sigma,\Gamma''\vdash M:\tau\)</span> and <span class=
-  "math">\(\Gamma'\vdash N:\sigma\)</span>; then <span class="math">\(\Gamma',\Gamma''\vdash M[x:=N]:\tau\)</span>.
-  This means that if we substitute all occurrences of context variable by a term of the same type, the result type is
-  unchanged which is intuitively understandable.</p>
+  "math">\(\lambda_\to\)</span>, we have to append type information. We then have the <em>Substitution Lemma</em>:
+  assume <span class="math">\(\Gamma',x:\sigma,\Gamma''\vdash M:\tau\)</span> and <span class="math">\(\Gamma'\vdash
+  N:\sigma\)</span>; then <span class="math">\(\Gamma',\Gamma''\vdash M[x:=N]:\tau\)</span>. This means that if we
+  substitute all occurrences of context variable by a term of the same type, the result type is unchanged which is
+  intuitively understandable.</p>
   <p>We also have to adjust the definition for beta reduction to the (pre-typed) terms of <span class=
   "math">\(\Lambda_\mathbb{T}\)</span>:</p>
   <ol>
-    <li><em>Basis</em>: <span class="math">\((\lambda x:\sigma.M)N\rightarrow_\beta M[x:=N]\)</span>.</li>
-    <li><em>Compatibility</em>: If <span class="math">\(M\rightarrow_\beta N\)</span>, then <span class=
-    "math">\(ML\rightarrow_\beta NL\)</span>, <span class="math">\(LM\rightarrow_\beta NL\)</span> and <span class=
-    "math">\(\lambda x:\tau.M\rightarrow_\beta \lambda x:\tau.N\)</span>.</li>
+    <li><em>Basis</em>: <span class="math">\((\lambda x:\sigma.M)N\to_\beta M[x:=N]\)</span>.</li>
+    <li><em>Compatibility</em>: If <span class="math">\(M\to_\beta N\)</span>, then <span class="math">\(ML\to_\beta
+    NL\)</span>, <span class="math">\(LM\to_\beta NL\)</span> and <span class="math">\(\lambda x:\tau.M\to_\beta
+    \lambda x:\tau.N\)</span>.</li>
   </ol>
   <p>The Church-Rosser Theorem is still valid as types clearly play no role in the reduction process.</p>
   <p>The <em>Subject Reduction</em> states that beta reduction does not affect typability, and even does not change the
@@ -509,12 +513,12 @@
   "math">\(L\twoheadrightarrow_\beta L'\)</span>, then <span class="math">\(\Gamma\vdash L':\rho\)</span>. Proof can be
   done by inducting the one basic and three compatibility cases of beta reduction.</p>
   <p>Finally, one can prove that there are no infinite reduction sequences in <span class=
-  "math">\(\lambda_\rightarrow\)</span>, or every legal term is strongly normalization. This is the <em>String
-  Normalization Theorem</em> or <em>Termination Theorem</em>.</p>
+  "math">\(\lambda_\to\)</span>, or every legal term is strongly normalization. This is the <em>String Normalization
+  Theorem</em> or <em>Termination Theorem</em>.</p>
   <h2 id="c3">3. Second Order Typed Lambda Calculus</h2>
-  <p>In Church's <span class="math">\(\lambda_\rightarrow\)</span>, we only encounter abstraction and application on
-  the term level, which is <em>first order</em>, as abstraction and application are over <em>terms</em>. In the present
-  chapter, <em>second order</em> operations, or terms depending on types, are introduced.</p>
+  <p>In Church's <span class="math">\(\lambda_\to\)</span>, we only encounter abstraction and application on the term
+  level, which is <em>first order</em>, as abstraction and application are over <em>terms</em>. In the present chapter,
+  <em>second order</em> operations, or terms depending on types, are introduced.</p>
   <p>This is called the <em>second order lambda calculus</em>, written as <span class="math">\(\lambda2\)</span> for
   short.</p>
   <h3 id="s3-1">3.1. <span class="math">\(\Pi\)</span> Types</h3>
@@ -526,14 +530,14 @@
   thus is second ordered or <em>polymorphic</em>.</p>
   <p>To type this polymorphic term, we introduce a new <em>binder</em>, the <span class="math">\(\Pi\)</span> binder.
   We can then express the type of the polymorphic function created earlier as <span class=
-  "math">\(\Pi\alpha:*.\alpha\rightarrow\alpha\)</span>.</p>
+  "math">\(\Pi\alpha:*.\alpha\to\alpha\)</span>.</p>
   <p>By an obvious extension of the alpha conversation, we obtain:</p>
   <div class="math">
-    \[\Pi\alpha:*.\alpha\rightarrow\alpha\equiv\Pi\beta:*.\beta\rightarrow\beta.\]
+    \[\Pi\alpha:*.\alpha\to\alpha\equiv\Pi\beta:*.\beta\to\beta.\]
   </div>
   <h3 id="s3-2">3.2. Second Order Abstraction and Application Rules</h3>
   <p>Since we allow second order abstraction, second order application and <span class="math">\(\Pi\)</span> types, our
-  derivation system for <span class="math">\(\lambda_\rightarrow\)</span> has to be extended.</p>
+  derivation system for <span class="math">\(\lambda_\to\)</span> has to be extended.</p>
   <div class="math">
     \[\begin{array}{lc} (appl_2)&amp;\displaystyle\frac{\Gamma\vdash M:\Pi\alpha:*.A\quad\Gamma\vdash B:*}{\Gamma\vdash
     MB:A[\alpha:=B]}.\\ (abst_2)&amp;\displaystyle\frac{\Gamma,\alpha:*\vdash
@@ -545,12 +549,12 @@
   <h3 id="s3-3">3.3. The System <span class="math">\(\lambda2\)</span></h3>
   <p>To describe the complete system, we have to first extend our definition of types. The abstract syntax for
   <span class="math">\(\lambda2\)</span> types is <span class=
-  "math">\(\mathbb{T}2=\mathbb{V}|(\mathbb{T}2\rightarrow\mathbb{T}2)|(\Pi\mathbb{V}:*.\mathbb{T}2)\)</span> while
+  "math">\(\mathbb{T}2=\mathbb{V}\mid(\mathbb{T}2\to\mathbb{T}2)\mid(\Pi\mathbb{V}:*.\mathbb{T}2)\)</span> while
   <span class="math">\(\mathbb{V}\)</span> is the set of type variables.</p>
   <p>Then we extend our set of pre-typed lambda terms so that second order abstraction and application are allowed:</p>
   <div class="math">
-    \[\Lambda_{\mathbb{T}2}=V|(\Lambda_{\mathbb{T}2}\Lambda_{\mathbb{T}2})|(\Lambda_{\mathbb{T}2}\mathbb{T}2)| (\lambda
-    V:\mathbb{T}2.\Lambda_{\mathbb{T}2})|(\lambda\mathbb{V}:*.\Lambda_{\mathbb{T}2}).\]
+    \[\Lambda_{\mathbb{T}2}=V\mid(\Lambda_{\mathbb{T}2}\Lambda_{\mathbb{T}2})\mid(\Lambda_{\mathbb{T}2}\mathbb{T}2)\mid
+    (\lambda V:\mathbb{T}2.\Lambda_{\mathbb{T}2})\mid(\lambda\mathbb{V}:*.\Lambda_{\mathbb{T}2}).\]
   </div>
   <p>Note that now we have two classes of variables: object variables <span class="math">\(V\)</span> and type
   variables <span class="math">\(\mathbb{V}\)</span>. We also have first order application <span class=
@@ -562,7 +566,7 @@
   <ul>
     <li>Outer parentheses may be omitted.</li>
     <li>Application is left-associative.</li>
-    <li>Application and <span class="math">\(\rightarrow\)</span> takes precedence over both <span class=
+    <li>Application and <span class="math">\(\to\)</span> takes precedence over both <span class=
     "math">\(\lambda\)</span> and <span class="math">\(\Pi\)</span> abstraction.</li>
     <li>Successive <span class="math">\(\lambda\)</span> or <span class="math">\(\Pi\)</span> abstractions concerning
     the same types may be combined in a right-associative way.</li>
@@ -607,9 +611,9 @@
   <p>The definition of alpha conversion is adapted and extended accommodating <span class="math">\(\Pi\)</span>
   types:</p>
   <ol>
-    <li><em>Renaming of term variable</em>: <span class="math">\(\lambda x:\sigma.M=_\alpha\lambda
-    y:\sigma.M^{x\rightarrow y}\)</span> if <span class="math">\(y\notin \texttt{fv}(M)\)</span> and <span class=
-    "math">\(y\)</span> does not occur as a binding variable in <span class="math">\(M\)</span>.</li>
+    <li><em>Renaming of term variable</em>: <span class="math">\(\lambda x:\sigma.M=_\alpha\lambda y:\sigma.M^{x\to
+    y}\)</span> if <span class="math">\(y\notin \texttt{fv}(M)\)</span> and <span class="math">\(y\)</span> does not
+    occur as a binding variable in <span class="math">\(M\)</span>.</li>
     <li><em>Renaming of type variable</em>: <span class=
     "math">\(\lambda\alpha:*.M=_\alpha\lambda\beta:*.M[\alpha:=\beta]\)</span> if <span class="math">\(\beta\)</span>
     does not occur in <span class="math">\(M\)</span> or <span class=
@@ -618,30 +622,27 @@
   </ol>
   <p>We also extend the beta reduction in an obvious way matching the extensions of alpha conversation:</p>
   <ol>
-    <li><em>Basis for first order</em>: <span class="math">\((\lambda m:\sigma.M)N\rightarrow_\beta
-    M[x:=N]\)</span>.</li>
-    <li><em>Basis for second order</em>: <span class="math">\((\lambda\alpha:*.M)T\rightarrow_\beta
-    M[\alpha:=T]\)</span>.</li>
+    <li><em>Basis for first order</em>: <span class="math">\((\lambda m:\sigma.M)N\to_\beta M[x:=N]\)</span>.</li>
+    <li><em>Basis for second order</em>: <span class="math">\((\lambda\alpha:*.M)T\to_\beta M[\alpha:=T]\)</span>.</li>
   </ol>
-  <p>Most properties for <span class="math">\(\lambda_\rightarrow\)</span> defined in the previous chapter still
-  applies, except the Permutation Lemma, which holds only if the permuted context is a <span class=
-  "math">\(\lambda2\)</span> context.</p>
+  <p>Most properties for <span class="math">\(\lambda_\to\)</span> defined in the previous chapter still applies,
+  except the Permutation Lemma, which holds only if the permuted context is a <span class="math">\(\lambda2\)</span>
+  context.</p>
   <h2 id="c4">4. Types Dependent on Types</h2>
   <p>In this chapter, we discuss the way to construct <em>generalized types</em>, by abstracting types. This results in
   the system <span class="math">\(\lambda\underline{\omega\!}\,\)</span>.</p>
   <h3 id="s4-1">4.1. Type Constructors</h3>
   <p>We can handle the abstraction of types of terms similar to the way we handle arbitrary types: types like
-  <span class="math">\(\beta\rightarrow\beta\)</span>, <span class="math">\(\gamma\rightarrow\gamma\)</span>,
-  <span class="math">\((\beta\rightarrow\gamma)\rightarrow(\beta\rightarrow\gamma)\)</span> can be generalized using a
-  function <span class="math">\(\lambda\alpha:*.\alpha\rightarrow\alpha\)</span> with type as value. This is a
-  so-called <em>type constructor</em>, with type <span class="math">\(*\rightarrow*\)</span> itself. <em>Proper
-  constructor</em> are the type constructors which are not types.</p>
+  <span class="math">\(\beta\to\beta\)</span>, <span class="math">\(\gamma\to\gamma\)</span>, <span class=
+  "math">\((\beta\to\gamma)\to(\beta\to\gamma)\)</span> can be generalized using a function <span class=
+  "math">\(\lambda\alpha:*.\alpha\to\alpha\)</span> with type as value. This is a so-called <em>type constructor</em>,
+  with type <span class="math">\(*\to*\)</span> itself. <em>Proper constructor</em> are the type constructors which are
+  not types.</p>
   <p>We name the type of the type constructors consisting of <span class="math">\(*\)</span> alone and of <span class=
   "math">\(*\)</span> symbols with arrows in between <em>kind</em>. They belong to set <span class=
   "math">\(\mathbb{K}\)</span> with abstract syntax <span class=
-  "math">\(\mathbb{K}=*|(\mathbb{K}\rightarrow\mathbb{K})\)</span>. Outermost parentheses may be omitted, and the kinds
-  are right-associative. For the type of all kinds, a new symbol <span class="math">\(\square\)</span> is
-  introduced.</p>
+  "math">\(\mathbb{K}=*\mid(\mathbb{K}\to\mathbb{K})\)</span>. Outermost parentheses may be omitted, and the kinds are
+  right-associative. For the type of all kinds, a new symbol <span class="math">\(\square\)</span> is introduced.</p>
   <p>We use the word <em>sort</em> or symbol <span class="math">\(s\)</span> for either <span class="math">\(*\)</span>
   or <span class="math">\(\square\)</span>; by definition, the set of sorts is <span class=
   "math">\(\{*,\square\}\)</span>.</p>
@@ -659,9 +660,9 @@
     \[(sort)\quad\emptyset\vdash*:\square.\]
   </div>
   <p>The variable rule is used to establish that all declarations occurring in a context is derivable in that context.
-  In <span class="math">\(\lambda_\rightarrow\)</span>, the set of permissible types was given beforehand. In
-  <span class="math">\(\lambda2\)</span>, we restrict the types of the variables to the recursively defined
-  <span class="math">\(\lambda2\)</span> context. For the more complicated <span class=
+  In <span class="math">\(\lambda_\to\)</span>, the set of permissible types was given beforehand. In <span class=
+  "math">\(\lambda2\)</span>, we restrict the types of the variables to the recursively defined <span class=
+  "math">\(\lambda2\)</span> context. For the more complicated <span class=
   "math">\(\lambda\underline{\omega\!}\,\)</span>, we combine it with the <em>construction of the context
   proper</em>.</p>
   <p>The new approach is that we only extend a context with a declaration <span class="math">\(x:A\)</span> only when
@@ -685,11 +686,9 @@
   <p>Now that we are able to derive for example <span class="math">\(\alpha:*,\beta:*\vdash\alpha:*\)</span> by proof
   tree:</p>
   <div class="math">
-    \[\begin{array}{cl}
-    \displaystyle\frac{\emptyset\vdash*:\square}{\alpha:*\vdash\alpha:*}\quad\frac{\emptyset\vdash*:\square}{\alpha:*\vdash*:\square}&
-    (var,weak)\\
-    \displaystyle\frac{\alpha:*\vdash\alpha:*\&gt;\quad\&gt;\alpha:*\vdash*:\square}{\alpha:*,\beta:*\vdash\alpha:*}&amp;(weak)
-    \end{array}\]
+    \[\dfrac{\dfrac{\emptyset\vdash*:\square}{\alpha:*\vdash\alpha:*}\quad
+    \dfrac{\emptyset\vdash*:\square\quad\emptyset\vdash*:\square}{\alpha:*\vdash*:\square}}
+    {\alpha:*,\beta:*\vdash\alpha:*} \]
   </div>
   <h3 id="s4-4">4.4. Formation Rule in <span class="math">\(\lambda\underline{\omega\!}\,\)</span></h3>
   <p>For the construction of typing statements in a context, we have the formation rule. In <span class=
@@ -697,7 +696,7 @@
   "math">\(\lambda2\)</span> types. While types are more complex in <span class=
   "math">\(\lambda\underline{\omega\!}\,\)</span>, the possibility of double roles makes things become easier.</p>
   <div class="math">
-    \[(form)\quad\frac{\Gamma\vdash A:s\quad\Gamma\vdash B:s}{\Gamma\vdash A\rightarrow B:s}.\]
+    \[(form)\quad\frac{\Gamma\vdash A:s\quad\Gamma\vdash B:s}{\Gamma\vdash A\to B:s}.\]
   </div>
   <h3 id="s4-5">4.5. Application and Abstraction Rules in <span class=
   "math">\(\lambda\underline{\omega\!}\,\)</span></h3>
@@ -705,9 +704,9 @@
   <span class="math">\(\lambda\underline{\omega\!}\,\)</span> and the lack of <span class="math">\(\Pi\)</span> types.
   Thus the type identifier is changed and a second premiss which the term must be well-formed is added.</p>
   <div class="math">
-    \[\begin{array}{lc} (appl)&amp;\displaystyle\frac{\Gamma\vdash M:A\rightarrow B\quad\Gamma\vdash N:A}{\Gamma\vdash
-    MN:B}.\\ (abst)&amp;\displaystyle\frac{\Gamma,x:A\vdash M:B\quad\Gamma\vdash A\rightarrow B:s}{\Gamma\vdash\lambda
-    x:A.M:A\rightarrow B}. \end{array}\]
+    \[\begin{array}{lc} (appl)&amp;\displaystyle\frac{\Gamma\vdash M:A\to B\quad\Gamma\vdash N:A}{\Gamma\vdash MN:B}.\\
+    (abst)&amp;\displaystyle\frac{\Gamma,x:A\vdash M:B\quad\Gamma\vdash A\to B:s}{\Gamma\vdash\lambda x:A.M:A\to B}.
+    \end{array}\]
   </div>
   <p>The two rules both have a double role again, since <span class="math">\(s\in\{*,\square\}\)</span>.</p>
   <h3 id="s4-6">4.6. Conversion Rule</h3>
@@ -722,5 +721,87 @@
   <p>The system <span class="math">\(\lambda\underline{\omega\!}\,\)</span> satisfies the majority of the nice
   properties from the previous systems, while only the conversion rule requires a slight modification of the Uniqueness
   of Type Lemma, that types need no longer be literally unique, but they are unique up to conversation.</p>
+  <h2 id="c5">5. Type Dependent on Terms</h2>
+  <p>In the previous three chapters, we have met <span class="math">\(\lambda_\to\)</span>, the basic system which
+  terms depending on terms; <span class="math">\(\lambda2\)</span>, terms depending on types; and <span class=
+  "math">\(\lambda\underline{\omega\!}\,\)</span>, types depending on types. In this chapter, we will treat the last
+  extension <span class="math">\(\lambda P\)</span> which types are dependent on terms.</p>
+  <p>A type depending on a term has general format <span class="math">\(\lambda x:A.M\)</span>, where <span class=
+  "math">\(M\)</span> is a type, <span class="math">\(x\)</span> is a term variable, and <span class=
+  "math">\(A\)</span> is a type. This abstraction then depends on <span class="math">\(x\)</span>, and is often called
+  <em>type-valued function</em> or simply type constructor.</p>
+  <p>For instance, let <span class="math">\(V_n=\{\langle v_1,\ldots,v_n\rangle\mid v_i\in\mathbb{N}\}\)</span>, a set
+  of all natural number vectors of length <span class="math">\(n\)</span>, then <span class="math">\(\lambda
+  n:nat.V_n\)</span> maps <span class="math">\(n\)</span> to the set of all vectors of length <span class=
+  "math">\(n\)</span>. It has type <span class="math">\(nat\to*\)</span>.</p>
+  <p>Furthermore, we can turn this type-valued function into a predicate. Take <span class="math">\(P_n\)</span> to be
+  the proposition <q><span class="math">\(n\)</span> is a prime number</q>, then <span class="math">\(\lambda
+  n:nat.P_n\)</span> is the logical predicate <q>to be a prime</q>. This is the PAT-interpretation introduced with
+  <span class="math">\(\lambda_\to\)</span>, the first step to a fruitful treatment of proof in formal logic and
+  mathematics.</p>
+  <h3 id="s5-1">5.1. Derivation Rules of <span class="math">\(\lambda P\)</span></h3>
+  <p>The derivation rules of <span class="math">\(\lambda P\)</span> has a great resemblance to the rules of
+  <span class="math">\(\lambda\underline{\omega\!}\,\)</span>, so we present them directly:</p>
+  <div class="math">
+    \[\begin{array}{lc} (sort)&amp;\emptyset\vdash*:\square.\\ (var)&amp;\displaystyle\frac{\Gamma\vdash A:s\quad
+    x\notin\Gamma}{\Gamma,x:A\vdash x:A}.\\ (weak)&amp;\displaystyle\frac{\Gamma\vdash A:B\quad\Gamma\vdash C:s\quad
+    x\notin\Gamma}{\Gamma,x:C\vdash A:B}.\\ (form)&amp;\displaystyle\frac{\Gamma\vdash A:*\quad\Gamma,x:A\vdash
+    B:s}{\Gamma\vdash\Pi x:A.B:s}.\\ (appl)&amp;\displaystyle\frac{\Gamma\vdash M:\Pi x:A.B\quad\Gamma\vdash
+    N:A}{\Gamma\vdash MN:B[x:=N]}.\\ (abst)&amp;\displaystyle\frac{\Gamma,x:A\vdash M:B\quad\Gamma\vdash\Pi
+    x:A.B:s}{\Gamma\vdash\lambda x:A.M:\Pi x:A.B}.\\ (conv)&amp;\displaystyle\frac{\Gamma\vdash A:B\quad\Gamma\vdash
+    B':s\quad B=_\beta B'}{\Gamma\vdash A:B'}. \end{array}\]
+  </div>
+  <p>The main differences with respect to <span class="math">\(\lambda\underline{\omega\!}\,\)</span> are:</p>
+  <ol>
+    <li>The appearance of <span class="math">\(\Pi\)</span> types instead of the <span class="math">\(\to\)</span>
+    types, which means <span class="math">\(B\)</span> is generalized so that <span class="math">\(x\)</span> can
+    appear as a free variable, thus a <em>dependent product</em>, which the output type depends on the input
+    value.</li>
+    <li>The input type can not be dependent on types anymore, so that it can only have type <span class=
+    "math">\(*\)</span>.</li>
+  </ol>
+  <p>The formation rule is also called the product rule, since it enables the construction and typing of a <span class=
+  "math">\(\Pi\)</span> type. Martin-Löf calls a <span class="math">\(\Pi\)</span> type the cartesian product of a
+  family of types. So <span class="math">\(\Pi\)</span> types can both be seen as a generalization of the cartesian
+  product (consider <span class="math">\(A=\{a_1,a_2\}\)</span>, then <span class="math">\(\Pi x:A.B\)</span> is the
+  same as <span class="math">\(B[x:=a_1]\times B[x:=a_2]\)</span>) and as a generalization of the function space (if
+  <span class="math">\(x\notin\texttt{fv}(B)\)</span>, then <span class="math">\(\Pi x:A.B\)</span> is just
+  <span class="math">\(A\to B\)</span>).</p>
+  <h3 id="s5-2">5.2. Minimal Predicate Logic</h3>
+  <p>We can code <em>minimal predicate logic</em> which only has <em>implication</em> and <em>universal
+  qualification</em> as logic operations with basic entities <em>propositions</em>, <em>sets</em> and <em>predicates
+  over sets</em> in <span class="math">\(\lambda P\)</span>.</p>
+  <p>We first investigate the coding of the basic entities of minimal predicate logic and apply the full PAT
+  interpretation in the appropriate cases.</p>
+  <ol>
+    <li>We code a set <span class="math">\(S\)</span> as a type, so <span class="math">\(S:*\)</span>. Then, the
+    elements of the sets are terms.</li>
+    <li>Propositions are coded as types. Let <span class="math">\(A\)</span> be a proposition, then <span class=
+    "math">\(A:*\)</span>. A term <span class="math">\(p\)</span> inhabiting such <span class="math">\(A\)</span> codes
+    a <em>proof</em> of <span class="math">\(A\)</span>.</li>
+    <li>A predicate <span class="math">\(P\)</span> is a function from a set <span class="math">\(S\)</span> to set of
+    all propositions. Therefore <span class="math">\(P:S\to*\)</span>. If this function with a term applied is
+    inhabited, then the predicate hold, and vice versa.</li>
+    <li>The implication <span class="math">\(A\Rightarrow B\)</span> is coded as the function type <span class=
+    "math">\(A\to B\)</span> in type theory. Note that propositions are independent from each other, so there is no
+    need to consider <span class="math">\(\Pi\)</span> types here.</li>
+    <li>We code the universal qualification <span class="math">\(\forall_{x\in S}(P(x))\)</span> as the <span class=
+    "math">\(\Pi\)</span> type <span class="math">\(\Pi x:S.Px\)</span>. And it turns out that the elimination and
+    introduction rules are a special case of the abstraction and application rules of <span class="math">\(\lambda
+    P\)</span>.</li>
+  </ol>
+  <p>An example of minimal predication logic is given. Let <span class="math">\(S\)</span> be a set and <span class=
+  "math">\(Q\)</span> a binary predicate over <span class="math">\(S\)</span>, what we want to prove is <span class=
+  "math">\(\forall_{x\in S}\forall_{y\in S}(Q(x,y))\Rightarrow\forall_{u\in S}(Q(u,u))\)</span>. We define a local
+  environment <span class="math">\(\Delta=\{S:*,Q:S\to S\to*\}\)</span> for this.</p>
+  <div class="math">
+    \[\dfrac{\dfrac{\dfrac{\dfrac{\Delta,z:\Pi x:S.\Pi y:S.Qxy,u:S\vdash z:\Pi x:S.\Pi y:S.Qxy\quad\Delta,z:\Pi x:S.\Pi
+    y:S.Qxy,u:S\vdash u:S} {\Delta,z:\Pi x:S.\Pi y:S.Qxy,u:S\vdash zu:\Pi y:S.Quy}\quad\Delta,z:\Pi x:S.\Pi
+    y:S.Qxy,u:S\vdash u:S} {\Delta,z:\Pi x:S.\Pi y:S.Qxy,u:S\vdash zuu:Quu}}{\Delta,z:\Pi x:S.\Pi y:S.Qxy\vdash\lambda
+    u:S.zuu:\Pi u:S.Quu}} {\Delta\vdash\lambda z:\Pi x:S.\Pi y:S.Qxy.\lambda u:S.zuu:\Pi z:S.\Pi y:S.Qxy\to\Pi
+    u:S.Quu}\]
+  </div>
+  <p>This is identical to a term finding process, and the proposition is proved since we succeeded in finding an
+  inhabitant for the type representing the proposition.</p>
 </body>
 </html>
