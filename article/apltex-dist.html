@@ -3,10 +3,12 @@
 <head>
   <meta name="generator" content="HTML Tidy for HTML5 for Apple macOS version 5.8.0">
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
   <meta name="creator" content="RsML1">
   <meta name="author" content="Jing Huang">
   <meta name="pubdate" content="2024-12-20">
   <title>Tiny TeX Distribution Based on Web2C and LuaTeX -- An Attempt on Minifying TeX</title>
+  <link href="/favicon.ico" rel="icon">
   <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script>
 </head>
 <body>
@@ -82,8 +84,8 @@
   LuaTeX. It is also Unicode-aware. Additionally, I've added an <code>\everyjob</code> hook so that LuaTeX will read
   <code>luatex.map</code><sup><a href="#f3">3</a></sup>.</p>
   <h2 id="c4">4. Dist Release</h2>
-  <p>The poor man's version doesn't come with any macro-packages -- only plainTeX. I believe external macro-packages
-  are generally unnecessary for plainTeX, except in a few cases.</p>
+  <p>The poor man's version doesn't come with any macro-packages — only plainTeX. I believe external macro-packages are
+  generally unnecessary for plainTeX, except in a few cases.</p>
   <p>For these rare cases, I've packaged a few macro-packages. These are mainly for demonstration purposes (showing how
   the modified TDS works), and to handle some of the complex dependencies (many of which weren't even documented). The
   packaged ones include:</p>
