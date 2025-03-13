@@ -10,7 +10,8 @@
   <title>Boot Gentoo Using EFI Stub -- Fast and Clean System Boot</title>
   <link href="/favicon.ico" rel="icon">
   <link href="/static/images/minami.jpg" rel="apple-touch-icon">
-  <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script>
+  <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script><script src=
+  "/script/listing.js"></script>
 </head>
 <body>
   <div class="header">
@@ -63,29 +64,29 @@
   <h3 id="s2-1">2.1. Configuration</h3>
   <p>You should enable native EFI support and EFI stub support for the kernel.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>Processor type and features ---&gt;</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>   [*] EFI runtime service support</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>   [*]   EFI stub support</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>   [ ]     EFI mixed-mode support</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-kernel">Processor type and features ---&gt;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-kernel">   [*] EFI runtime service support</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-kernel">   [*]   EFI stub support</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-kernel">   [ ]     EFI mixed-mode support</code></span></span></pre>
   </div>
   <p>You are also recommended to embed the root partition information into the kernel.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>Processor type and features ---&gt;</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>   [*] Built-in kernel command line</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>       (root=/dev/nvme0n1p3)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-kernel">Processor type and features ---&gt;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-kernel">   [*] Built-in kernel command line</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-kernel">       (root=/dev/nvme0n1p3)</code></span></span></pre>
   </div>
   <h3 id="s2-2">2.2. Install</h3>
   <p>Rebuild the kernel and install the kernel modules.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>make -j &amp;& make modules_install</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-bash">make -j &amp;& make modules_install</code></span></span></pre>
   </div>
   <h3 id="s2-3">2.3. Initramfs</h3>
   <p>An initramfs regeneration might be necessary. For example if you embedded the root partition information into the
@@ -94,16 +95,16 @@
   <p>Create an EFI system partition if you don't have one. This ESP should then be mounted at <code>/efi</code>. Then
   make the below directory structure:</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>/efi</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>└── EFI</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>    └── Gentoo</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>        ├── initramfs.img</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>        └── bzImage.efi</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-dir">/efi</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-dir">└── EFI</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-dir">    └── Gentoo</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-dir">        ├── initramfs.img</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-dir">        └── bzImage.efi</code></span></span></pre>
   </div>
   <p>The <code>bzImage.efi</code> should be copied from <code>/usr/src/linux/arch/x86/boot/bzImage</code>. The
   <code>initramfs.img</code> is optional, copied from the initramfs only when needed.</p>
@@ -114,8 +115,8 @@
   (i.e., properly mounted).</p>
   <p>Run the following command to check if it is mounted properly:</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>mount | grep efivars</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-bash">mount | grep efivars</code></span></span></pre>
   </div>
   <p>If it is mounted as <code>ro</code>, remount it with <code>rw</code> so that we can create and modify EFI boot
   entries.</p>
@@ -123,15 +124,15 @@
   <p>First execute <code>efibootmgr</code> without any options to list the existing boot entries. Remove unnecessary or
   obsolete ones with:</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>efibootmgr -b 2 -B # select the `Bootx002' entry and remove it</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-bash">efibootmgr -b 2 -B # select the `Bootx002' entry and remove it</code></span></span></pre>
   </div>
   <p>Then create an entry for our system.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>efibootmgr -c -d /dev/nvme0n1 -p 2 -L "Linux EFI Stub" -l '\EFI\gentoo\bzImage.efi' -u 'root=/dev/nvme0n1p3' # without initramfs</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>efibootmgr -c -d /dev/nvme0n1 -p 2 -L "Linux EFI Stub" -l '\EFI\gentoo\bzImage.efi' -u 'initrd=\EFI\gentoo\initramfs.img' # with initramfs</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-bash">efibootmgr -c -d /dev/nvme0n1 -p 2 -L "Linux EFI Stub" -l '\EFI\gentoo\bzImage.efi' -u 'root=/dev/nvme0n1p3' # without initramfs</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">efibootmgr -c -d /dev/nvme0n1 -p 2 -L "Linux EFI Stub" -l '\EFI\gentoo\bzImage.efi' -u 'initrd=\EFI\gentoo\initramfs.img' # with initramfs</code></span></span></pre>
   </div>
   <p>After checking if the system can successfully boot, you can unmerge <code>efibootmgr</code>. Just copy new kernel
   images and initramfs to the same position on the EFI partition.</p>

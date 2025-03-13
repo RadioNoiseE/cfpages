@@ -10,7 +10,8 @@
   <title>GNU Emacs Configuration -- Ano, What is This?</title>
   <link href="/favicon.ico" rel="icon">
   <link href="/static/images/minami.jpg" rel="apple-touch-icon">
-  <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script>
+  <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script><script src=
+  "/script/listing.js"></script>
 </head>
 <body>
   <div class="header">
@@ -48,918 +49,945 @@
   <code>init.el</code> is loaded. This ensures the settings which might cause clutter or affect performance are
   avoided, and the initial UI is cleaned up.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq read-process-output-max (* 4 1024 1024)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      display-time-load-average nil</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      process-adaptive-read-buffering nil</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      frame-inhibit-implied-resize t</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>      frame-resize-pixelwise t</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      default-frame-alist '((width . 150)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                            (height . 50)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                            (vertical-scroll-bar . nil)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                            (horizontal-scroll-bar . nil)</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>                            (ns-transparent-titlebar t)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(scroll-bar-mode -1)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(tool-bar-mode -1)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(tooltip-mode -1)</code></span></span>
-<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class=
-"ld"><code>(menu-bar-mode -1)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq read-process-output-max (* 4 1024 1024)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      display-time-load-average nil</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      process-adaptive-read-buffering nil</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      frame-inhibit-implied-resize t</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      frame-resize-pixelwise t</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      default-frame-alist '((width . 150)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                            (height . 50)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                            (vertical-scroll-bar . nil)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                            (horizontal-scroll-bar . nil)</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                            (ns-transparent-titlebar t)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(scroll-bar-mode -1)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(tool-bar-mode -1)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(tooltip-mode -1)</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(menu-bar-mode -1)</code></span></span></pre>
   </div>
   <p>As you can see, there are no redundant GC tweaks.</p>
   <h2 id="c2">2. Initial Stage</h2>
   <p>The handlers for file names are stripped locally during the very early stages.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq-local file-name-handler-alist nil)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq-local file-name-handler-alist nil)</code></span></span></pre>
   </div>
   <p>Boot splash screen is inhibited, while <code>custom</code> is instructed not to modify <code>init.el</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq inhibit-startup-message t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      custom-file (make-temp-file "custom" nil ".el"))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq inhibit-startup-message t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      custom-file (make-temp-file "custom" nil ".el"))</code></span></span></pre>
   </div>
   <p>Then add <code>core</code> to the load path.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(mapc (lambda (folder)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>        (add-to-list 'load-path</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>                     (expand-file-name folder user-emacs-directory)))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      '("core"))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(mapc (lambda (folder)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (add-to-list 'load-path</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                     (expand-file-name folder user-emacs-directory)))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      '("core"))</code></span></span></pre>
   </div>
   <p>Function used to update the environment variables, particularly <code>PATH</code>, from the shell, so that Emacs
   can call the correct executables. This is utilized at <a href="#v2-6">Verbatim 2.6</a>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(defun env-flush ()</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (let* ((shell (or (getenv "SHELL") "/bin/sh"))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (command (format "%s -l -c 'env'" shell)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (with-temp-buffer</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>      (call-process-shell-command command nil t)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (goto-char (point-min))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (while (re-search-forward "^\\([^=]+\\)=\\(.*\\)$" nil t)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (when-let* ((variable (match-string 1))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                    (value (match-string 2)))</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>          (when (string= variable "PATH")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (setenv variable value)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (setq exec-path (split-string value path-separator))))))))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(defun env-flush ()</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (let* ((shell (or (getenv "SHELL") "/bin/sh"))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (command (format "%s -l -c 'env'" shell)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (with-temp-buffer</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (call-process-shell-command command nil t)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (goto-char (point-min))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (while (re-search-forward "^\\([^=]+\\)=\\(.*\\)$" nil t)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (when-let* ((variable (match-string 1))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                    (value (match-string 2)))</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">          (when (string= variable "PATH")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (setenv variable value)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (setq exec-path (split-string value path-separator))))))))</code></span></span></pre>
   </div>
   <p>Set up the Milkypostman's Emacs Lisp package archive.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(with-eval-after-load 'package</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (add-to-list 'package-archives</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>               '("melpa" . "https://melpa.org/packages/")))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(with-eval-after-load 'package</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (add-to-list 'package-archives</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">               '("melpa" . "https://melpa.org/packages/")))</code></span></span></pre>
   </div>
   <p>Make sure that <code>use-package</code> is loaded during byte-compilation, then prepare it for use.</p>
   <div class="prewrap">
-    <pre id="v2-6"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(eval-when-compile</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (require 'use-package))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(with-eval-after-load 'use-package</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>  (env-flush))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(setq use-package-always-ensure t)</code></span></span></pre>
+    <pre id="v2-6"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(eval-when-compile</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (require 'use-package))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(with-eval-after-load 'use-package</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (env-flush))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(setq use-package-always-ensure t)</code></span></span></pre>
   </div>
   <p>Advice <code>use-package</code> to conceal the package declaration if the executable specified using
   <code>:with</code> keyword is not found.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(define-advice use-package</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>    (:around (orig package &amp;rest body) use-with-binary)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (let ((executable (plist-get body :with)))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>    (when executable</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>      (setq body (seq-difference body `(:with ,executable))))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>    (if (or (not executable) (executable-find executable))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>        (apply orig package body))))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(define-advice use-package</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (:around (orig package &amp;rest body) use-with-binary)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (let ((executable (plist-get body :with)))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (when executable</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (setq body (seq-difference body `(:with ,executable))))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (if (or (not executable) (executable-find executable))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (apply orig package body))))</code></span></span></pre>
   </div>
   <p>Tell Emacs not to litter in the working space.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq backup-directory-alist `((".*" . ,temporary-file-directory))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq backup-directory-alist `((".*" . ,temporary-file-directory))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))</code></span></span></pre>
   </div>
   <p>Dump autoloads collected from the <code>core</code> directory into <code>core-autoloads.el</code> and evaluate it
   by abusing <code>use-package</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package core-autoloads</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :load-path "core"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (loaddefs-generate</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>         (concat user-emacs-directory "core")</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>         (concat user-emacs-directory "core/core-autoloads.el")))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package core-autoloads</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :load-path "core"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (loaddefs-generate</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (concat user-emacs-directory "core")</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (concat user-emacs-directory "core/core-autoloads.el")))</code></span></span></pre>
   </div>
   <h2 id="c3">3. Displayed Frame</h2>
   <p>Configure the fallback Hanazono Mincho fontset, which covers all CJK unified and compatibility ideographs.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq cjk-fontset-map-alist '(("Hanazono Mincho A" . ((#x0000 . #xD7FF)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>                                                      (#xE000 . #xFFFD)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>                                                      (#x10000 . #x1FFFD)))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>                              ("Hanazono Mincho B" . ((#x20000 . #x2A6D6)))</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>                              ("Hanazono Mincho C" . ((#x2A700 . #x2FFFD)))))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(dolist (entry cjk-fontset-map-alist)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (dolist (range (cdr entry))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>    (set-fontset-font t range (font-spec :family (car entry)))))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq cjk-fontset-map-alist '(("Hanazono Mincho A" . ((#x0000 . #xD7FF)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                                      (#xE000 . #xFFFD)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                                      (#x10000 . #x1FFFD)))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                              ("Hanazono Mincho B" . ((#x20000 . #x2A6D6)))</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                              ("Hanazono Mincho C" . ((#x2A700 . #x2FFFD)))))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(dolist (entry cjk-fontset-map-alist)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (dolist (range (cdr entry))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (set-fontset-font t range (font-spec :family (car entry)))))</code></span></span></pre>
   </div>
   <p>Next, we configure the Latin font, which indirectly overrides Hanazono Mincho as a side effect.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(when (display-graphic-p)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (set-face-attribute 'default nil :family "SF Mono")</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (set-face-attribute 'fixed-pitch nil :family "IBM 3270")</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (set-face-attribute 'fixed-pitch-serif nil :family "IBM 3270")</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>  (set-face-attribute 'variable-pitch nil :family "IBM Plex Serif"))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(when (display-graphic-p)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (set-face-attribute 'default nil :family "SF Mono")</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (set-face-attribute 'fixed-pitch nil :family "IBM 3270")</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (set-face-attribute 'fixed-pitch-serif nil :family "IBM 3270")</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (set-face-attribute 'variable-pitch nil :family "IBM Plex Serif"))</code></span></span></pre>
   </div>
   <p>Optimizes the editing experience for large files, based on LdBeth's approach.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq bidi-display-reordering nil</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      bidi-inhibit-bpa t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      long-line-threshold 1000</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      large-hscroll-threshold 1000</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>      syntax-wholeline-max 1000)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq bidi-display-reordering nil</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      bidi-inhibit-bpa t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      long-line-threshold 1000</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      large-hscroll-threshold 1000</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      syntax-wholeline-max 1000)</code></span></span></pre>
   </div>
   <p>Abolish the annoying key binding to <code>mouse-wheel-text-scale</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(keymap-global-set "C-&lt;wheel-up&gt;" 'ignore)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(keymap-global-set "C-&lt;wheel-down&gt;" 'ignore)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(keymap-global-set "C-&lt;wheel-up&gt;" 'ignore)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(keymap-global-set "C-&lt;wheel-down&gt;" 'ignore)</code></span></span></pre>
   </div>
   <p>Enable pixel-based precision scrolling.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(pixel-scroll-precision-mode t)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(setq pixel-scroll-precision-use-momentum t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      pixel-scroll-precision-interpolate-page t)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(pixel-scroll-precision-mode t)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(setq pixel-scroll-precision-use-momentum t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      pixel-scroll-precision-interpolate-page t)</code></span></span></pre>
   </div>
   <p>Match parentheses by default.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(electric-pair-mode t)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(electric-pair-mode t)</code></span></span></pre>
   </div>
   <p>Load Protesilaos' Modus theme, specifically optimized for users with blue-yellow color deficiency.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq modus-themes-common-palette-overrides</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      '((fringe unspecified)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>        (border-mode-line-active cyan-faint)))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>(mapc 'disable-theme custom-enabled-themes)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(load-theme 'modus-operandi-tritanopia)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq modus-themes-common-palette-overrides</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      '((fringe unspecified)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (border-mode-line-active cyan-faint)))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(mapc 'disable-theme custom-enabled-themes)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(load-theme 'modus-operandi-tritanopia)</code></span></span></pre>
   </div>
   <p>Supply my own modeline, inspired by <code>tecoline</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq mode-line-right-align-edge 'right-margin)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(defun mode-line-compose (indicator buffer preamble postamble)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (list `(:propertize ,indicator face (:foreground "#ffffff" :background "#004f5f"))</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>        `(:propertize ,buffer face (:foreground "#193668"))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        'mode-line-format-right-align</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        `(:propertize ,preamble face (:foreground "#193668"))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        '(:propertize "&lt;&lt;" face (:foreground "#595959"))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        `(:propertize ,postamble face ((:foreground "#004f5f") bold))))</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(defun mode-line-default ()</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (let ((indicator '(" " (:eval (cond ((and buffer-file-name (buffer-modified-p)) "RW")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (buffer-read-only "RO")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (t "WR"))) " "))</code></span></span>
-<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class=
-"ld"><code>        (buffer '(" %b "))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (preamble '((-3 "%p") " %l:%c "))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (postamble '(" %[" mode-name "%] ")))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (mode-line-compose indicator buffer preamble postamble)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class=
-"ld"><code>(setq-default mode-line-format (mode-line-default))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq mode-line-right-align-edge 'right-margin)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun mode-line-compose (indicator buffer preamble postamble)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (list `(:propertize ,indicator face (:foreground "#ffffff" :background "#004f5f"))</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        `(:propertize ,buffer face (:foreground "#193668"))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        'mode-line-format-right-align</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        `(:propertize ,preamble face (:foreground "#193668"))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        '(:propertize "&lt;&lt;" face (:foreground "#595959"))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        `(:propertize ,postamble face ((:foreground "#004f5f") bold))))</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun mode-line-default ()</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (let ((indicator '(" " (:eval (cond ((and buffer-file-name (buffer-modified-p)) "RW")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (buffer-read-only "RO")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (t "WR"))) " "))</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (buffer '(" %b "))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (preamble '((-3 "%p") " %l:%c "))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (postamble '(" %[" mode-name "%] ")))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (mode-line-compose indicator buffer preamble postamble)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(setq-default mode-line-format (mode-line-default))</code></span></span></pre>
   </div>
   <p>Gain focus upon launched on Aqua.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(select-frame-set-input-focus (selected-frame))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(select-frame-set-input-focus (selected-frame))</code></span></span></pre>
   </div>
   <p>Handy utility to peak into the window behind.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(defun adjust-frame-opacity (frame delta)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (let* ((alpha (or (frame-parameter frame 'alpha) 100))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (alpha (if (listp alpha) (car alpha) alpha))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (alpha (+ alpha delta)))</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>    (when (and (&lt;= frame-alpha-lower-limit alpha)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>               (&gt;= 100 alpha))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (set-frame-parameter frame 'alpha alpha))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(defun frame-perspective ()</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>  (interactive)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (dolist (frame (frame-list))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (adjust-frame-opacity frame -40))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (read-event)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (when last-input-event</code></span></span>
-<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class=
-"ld"><code>    (dolist (frame (frame-list))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (adjust-frame-opacity frame 40))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(keymap-global-set "M-RET" 'frame-perspective)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(defun adjust-frame-opacity (frame delta)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (let* ((alpha (or (frame-parameter frame 'alpha) 100))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (alpha (if (listp alpha) (car alpha) alpha))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (alpha (+ alpha delta)))</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (when (and (&lt;= frame-alpha-lower-limit alpha)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">               (&gt;= 100 alpha))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (set-frame-parameter frame 'alpha alpha))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun frame-perspective ()</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (interactive)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (dolist (frame (frame-list))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (adjust-frame-opacity frame -40))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (read-event)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (when last-input-event</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (dolist (frame (frame-list))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (adjust-frame-opacity frame 40))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(keymap-global-set "M-RET" 'frame-perspective)</code></span></span></pre>
   </div>
   <p>For refined CJK line-breaking, respecting Kinsoku.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq word-wrap-by-category t)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq word-wrap-by-category t)</code></span></span></pre>
   </div>
   <p>Enable natural line-breaking and inline completion preview in text mode.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(defun text-mode-refine ()</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (setq-local corfu-auto nil</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>              completion-preview-minimum-symbol-length 2)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (completion-preview-mode)</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>  (visual-line-mode))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(add-hook 'text-mode-hook</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>          'text-mode-refine)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(defun text-mode-refine ()</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (setq-local corfu-auto nil</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              completion-preview-minimum-symbol-length 2)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (completion-preview-mode)</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (visual-line-mode))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(add-hook 'text-mode-hook</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">          'text-mode-refine)</code></span></span></pre>
   </div>
   <p>Alternate way to insert backslash on JIS keyboard.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(keymap-global-set "M-¥" "\\")</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(keymap-global-set "M-¥" "\\")</code></span></span></pre>
   </div>
   <p>Get rid of tabs, fortunately with ease.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq-default indent-tabs-mode nil)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq-default indent-tabs-mode nil)</code></span></span></pre>
   </div>
   <h2 id="c4">4. Extension Packages</h2>
   <p>Make <code>dired</code> compatible with BSD <code>ls</code>, and enable <code>gpg</code> loopback for
   <code>epg</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq dired-use-ls-dired nil</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>      epg-pinentry-mode 'loopback)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq dired-use-ls-dired nil</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      epg-pinentry-mode 'loopback)</code></span></span></pre>
   </div>
   <p>Configure <code>treesit</code> to handle syntax highlighting, while keeping <code>fontlock</code> as a
   fallback.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package treesit</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  :ensure nil)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(setq treesit-language-unmask-alist '((c++ . cpp))</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>      treesit-language-fallback-alist '((html-ts-mode . mhtml-mode))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      treesit-language-source-alist '((bash "https://github.com/tree-sitter/tree-sitter-bash")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (c "https://github.com/tree-sitter/tree-sitter-c")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (cpp "https://github.com/tree-sitter/tree-sitter-cpp")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (css "https://github.com/tree-sitter/tree-sitter-css")</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (html "https://github.com/tree-sitter/tree-sitter-html")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (json "https://github.com/tree-sitter/tree-sitter-json")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                      (rust "https://github.com/tree-sitter/tree-sitter-rust")))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(dolist (grammar treesit-language-source-alist)</code></span></span>
-<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class=
-"ld"><code>  (let* ((language (or (car (rassq (car grammar) treesit-language-unmask-alist))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                       (car grammar)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (derived (intern (concat (symbol-name language) "-ts-mode")))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (fallback (assq derived treesit-language-fallback-alist))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (default (or (cdr fallback)</code></span></span>
-<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class=
-"ld"><code>                      (intern (concat (symbol-name language) "-mode")))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (and (not (and fallback (not (cdr fallback))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (fboundp derived)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>         (if (treesit-ready-p (car grammar) t)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>             (add-to-list 'major-mode-remap-alist</code></span></span>
-<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class=
-"ld"><code>                          `(,default . ,derived))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>           (when (fboundp default)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>             (add-to-list 'major-mode-remap-alist</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                          `(,derived . ,default)))))))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package treesit</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :ensure nil)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(setq treesit-language-unmask-alist '((c++ . cpp))</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      treesit-language-fallback-alist '((html-ts-mode . mhtml-mode))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      treesit-language-source-alist '((bash "https://github.com/tree-sitter/tree-sitter-bash")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (c "https://github.com/tree-sitter/tree-sitter-c")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (cpp "https://github.com/tree-sitter/tree-sitter-cpp")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (css "https://github.com/tree-sitter/tree-sitter-css")</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (html "https://github.com/tree-sitter/tree-sitter-html")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (json "https://github.com/tree-sitter/tree-sitter-json")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                      (rust "https://github.com/tree-sitter/tree-sitter-rust")))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(dolist (grammar treesit-language-source-alist)</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (let* ((language (or (car (rassq (car grammar) treesit-language-unmask-alist))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                       (car grammar)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (derived (intern (concat (symbol-name language) "-ts-mode")))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (fallback (assq derived treesit-language-fallback-alist))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (default (or (cdr fallback)</code></span></span>
+<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                      (intern (concat (symbol-name language) "-mode")))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (and (not (and fallback (not (cdr fallback))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (fboundp derived)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (if (treesit-ready-p (car grammar) t)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">             (add-to-list 'major-mode-remap-alist</code></span></span>
+<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                          `(,default . ,derived))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">           (when (fboundp default)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">             (add-to-list 'major-mode-remap-alist</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                          `(,derived . ,default)))))))</code></span></span></pre>
   </div>
   <p>Key binding hints by <code>which-key</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package which-key</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :hook (after-init . which-key-mode)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (which-key-setup-minibuffer))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package which-key</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :hook (after-init . which-key-mode)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (which-key-setup-minibuffer))</code></span></span></pre>
   </div>
   <p>Minibuffer completion by <code>vertico</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package vertico</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :hook (after-init . vertico-mode))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package vertico</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :hook (after-init . vertico-mode))</code></span></span></pre>
   </div>
   <p>In-buffer completion by <code>corfu</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq tab-always-indent 'complete</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      read-extended-command-predicate 'command-completion-default-include-p)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(use-package corfu</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>  :hook (after-init . global-corfu-mode)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (setq corfu-auto t</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              corfu-cycle t</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              corfu-preselect 'prompt</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              corfu-quit-no-match 'separator)</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>  :bind (:map corfu-map</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              ([tab] . corfu-next)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              ([backtab] . corfu-previous)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              ([return] . corfu-send)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              ([escape] . corfu-quit)))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq tab-always-indent 'complete</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      read-extended-command-predicate 'command-completion-default-include-p)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(use-package corfu</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :hook (after-init . global-corfu-mode)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (setq corfu-auto t</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              corfu-cycle t</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              corfu-preselect 'prompt</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              corfu-quit-no-match 'separator)</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :bind (:map corfu-map</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              ([tab] . corfu-next)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              ([backtab] . corfu-previous)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              ([return] . corfu-send)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              ([escape] . corfu-quit)))</code></span></span></pre>
   </div>
   <p>Docstring informations during selection in minibuffer.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package marginalia</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :hook (after-init . marginalia-mode))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package marginalia</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :hook (after-init . marginalia-mode))</code></span></span></pre>
   </div>
   <p>Snippet and template support via <code>yasnippet</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package yasnippet</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :hook (prog-mode . yas-minor-mode))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package yasnippet</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :hook (prog-mode . yas-minor-mode))</code></span></span></pre>
   </div>
   <p>Language server protocol integration provided by <code>eglot</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package eglot</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :hook ((c-ts-mode c++-ts-mode tuareg-mode caml-mode) . eglot-ensure))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package eglot</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :hook ((c-ts-mode c++-ts-mode tuareg-mode caml-mode) . eglot-ensure))</code></span></span></pre>
   </div>
   <p>Childframe documentation for <code>eldoc</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package eldoc-box</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :hook ((eglot-managed-mode . eldoc-box-hover-mode)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>         (eldoc-mode . eldoc-box-hover-mode)))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package eldoc-box</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :hook ((eglot-managed-mode . eldoc-box-hover-mode)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         (eldoc-mode . eldoc-box-hover-mode)))</code></span></span></pre>
   </div>
   <p>Make the Emacs web broswer capable of rendering XSL templates, implemented as a <code>xsltproc</code> filter.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(defun eww-extract-xslt ()</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (save-excursion</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (goto-char (point-min))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (when (re-search-forward "&lt;\\?xml-stylesheet [^&gt;]*href=['\"]\\([^'\"]+\\)['\"]" nil t)</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>      (let ((xslt (match-string 1))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (link (url-generic-parse-url (eww-current-url))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (if (file-name-absolute-p xslt)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (progn</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              (setf (url-filename link) xslt)</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>              (url-recreate-url link))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>          (let* ((path (file-name-directory (url-filename link)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                 (xslt (expand-file-name xslt path)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (setf (url-filename link) xslt)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (url-recreate-url link)))))))</code></span></span>
-<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(defun eww-render-xslt ()</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (when (or (string-match "\\.xml$" (eww-current-url))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (save-excursion</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              (goto-char (point-min))</code></span></span>
-<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class=
-"ld"><code>              (re-search-forward "&lt;\\?xml" nil t)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (when-let* ((link (eww-extract-xslt))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                (xslt (make-temp-file "eww" nil ".xsl"))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                (xml (make-temp-file "eww" nil ".xml"))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                (html (make-temp-file "eww" nil ".html"))</code></span></span>
-<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class=
-"ld"><code>                (command (format "xsltproc '%s' '%s' &gt; '%s'" xslt xml html)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (url-copy-file link xslt t)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (append-to-file nil nil xml)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (call-process-shell-command command nil nil)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (eww-open-file html))))</code></span></span>
-<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(add-hook 'eww-after-render-hook</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>          'eww-render-xslt)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(defun eww-extract-xslt ()</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (save-excursion</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (goto-char (point-min))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (when (re-search-forward "&lt;\\?xml-stylesheet [^&gt;]*href=['\"]\\([^'\"]+\\)['\"]" nil t)</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (let ((xslt (match-string 1))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (link (url-generic-parse-url (eww-current-url))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (if (file-name-absolute-p xslt)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (progn</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              (setf (url-filename link) xslt)</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              (url-recreate-url link))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">          (let* ((path (file-name-directory (url-filename link)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                 (xslt (expand-file-name xslt path)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (setf (url-filename link) xslt)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (url-recreate-url link)))))))</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun eww-render-xslt ()</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (when (or (string-match "\\.xml$" (eww-current-url))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (save-excursion</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              (goto-char (point-min))</code></span></span>
+<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              (re-search-forward "&lt;\\?xml" nil t)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (when-let* ((link (eww-extract-xslt))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                (xslt (make-temp-file "eww" nil ".xsl"))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                (xml (make-temp-file "eww" nil ".xml"))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                (html (make-temp-file "eww" nil ".html"))</code></span></span>
+<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                (command (format "xsltproc '%s' '%s' &gt; '%s'" xslt xml html)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (url-copy-file link xslt t)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (append-to-file nil nil xml)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (call-process-shell-command command nil nil)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (eww-open-file html))))</code></span></span>
+<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(add-hook 'eww-after-render-hook</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">          'eww-render-xslt)</code></span></span></pre>
   </div>
   <p>Mail user agent in Emacs featuring WanderLust.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(setq user-mail-address "j18516785606@icloud.com"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      user-full-name "RnE"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      mail-user-agent 'wl-user-agent)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>(define-mail-user-agent</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  'wl-user-agent</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  'wl-user-agent-compose</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  'wl-draft-send</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  'wl-draft-kill</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>  'mail-send-hook)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(use-package wanderlust</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (setq elmo-passwd-storage-type 'auth-source</code></span></span>
-<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-temporary-file-directory "~/.wl"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-smtp-connection-type 'starttls</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-smtp-authenticate-type "plain"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-smtp-posting-user "j18516785606@icloud.com"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-smtp-posting-server "smtp.mail.me.com"</code></span></span>
-<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-smtp-posting-port 587</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-local-domain "icloud.com"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-summary-width nil</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-summary-line-format "%n%T%P %W:%M/%D %h:%m %36(%t%[%c %f %]%) %s"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-thread-indent-level 2</code></span></span>
-<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-thread-have-younger-brother-str "+"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-thread-youngest-child-str "+"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-thread-vertical-str " "</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-thread-horizontal-str "-"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-thread-space-str " "</code></span></span>
-<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-message-id-domain "smtp.mail.me.com"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-message-ignored-field-list '(".")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-message-visible-field-list</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              '("^Subject:"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^\\(To\\|Cc\\):"</code></span></span>
-<span class="line"><span class="ln">35 <span class="nsep">|</span></span><span class=
-"ld"><code>                "^\\(From\\|Reply-To\\):"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^\\(Posted\\|Date\\):"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^Organization:"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^X-Face\\(-[0-9]+\\)?:")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-message-sort-field-list</code></span></span>
-<span class="line"><span class="ln">40 <span class="nsep">|</span></span><span class=
-"ld"><code>              '("^Subject"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^\\(To\\|Cc\\)"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^\\(From\\|Reply-To\\)"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^\\(Posted\\|Date\\)"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                "^Organization")</code></span></span>
-<span class="line"><span class="ln">45 <span class="nsep">|</span></span><span class=
-"ld"><code>              wl-highlight-x-face-function 'x-face-decode-message-header))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(setq user-mail-address "j18516785606@icloud.com"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      user-full-name "RnE"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      mail-user-agent 'wl-user-agent)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(define-mail-user-agent</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  'wl-user-agent</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  'wl-user-agent-compose</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  'wl-draft-send</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  'wl-draft-kill</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  'mail-send-hook)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(use-package wanderlust</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (setq elmo-passwd-storage-type 'auth-source</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-temporary-file-directory "~/.wl"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-smtp-connection-type 'starttls</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-smtp-authenticate-type "plain"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-smtp-posting-user "j18516785606@icloud.com"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-smtp-posting-server "smtp.mail.me.com"</code></span></span>
+<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-smtp-posting-port 587</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-local-domain "icloud.com"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-summary-width nil</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-summary-line-format "%n%T%P %W:%M/%D %h:%m %36(%t%[%c %f %]%) %s"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-thread-indent-level 2</code></span></span>
+<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-thread-have-younger-brother-str "+"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-thread-youngest-child-str "+"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-thread-vertical-str " "</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-thread-horizontal-str "-"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-thread-space-str " "</code></span></span>
+<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-message-id-domain "smtp.mail.me.com"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-message-ignored-field-list '(".")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-message-visible-field-list</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              '("^Subject:"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^\\(To\\|Cc\\):"</code></span></span>
+<span class="line"><span class="ln">35 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^\\(From\\|Reply-To\\):"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^\\(Posted\\|Date\\):"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^Organization:"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^X-Face\\(-[0-9]+\\)?:")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-message-sort-field-list</code></span></span>
+<span class="line"><span class="ln">40 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              '("^Subject"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^\\(To\\|Cc\\)"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^\\(From\\|Reply-To\\)"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^\\(Posted\\|Date\\)"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                "^Organization")</code></span></span>
+<span class="line"><span class="ln">45 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              wl-highlight-x-face-function 'x-face-decode-message-header))</code></span></span></pre>
   </div>
   <p>Tweak the background color for the splash image, and modifications for HTML mail preview using XWidget.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(with-eval-after-load 'wl-demo</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (set-face-background 'wl-highlight-demo-face nil))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(eval-when-compile</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>  (require 'xwidget))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(defun xwidget-wl-window-remnant (window)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (when-let* ((object (next-single-property-change (point-min) 'display))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>              (total (xwidget-window-inside-pixel-height window))</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>              (remnant 0))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (save-excursion</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (goto-char (point-min))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (while (&lt; (point) object)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (setq remnant (+ remnant (line-pixel-height)))</code></span></span>
-<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class=
-"ld"><code>        (forward-line 1))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (goto-char (+ object 2))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (while (&lt; (point) (point-max))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (setq remnant (+ remnant (line-pixel-height)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (forward-line 1)))</code></span></span>
-<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class=
-"ld"><code>    (- total (+ remnant 4))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(defun xwidget-wl-window-realize (&amp;optional frame)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (walk-windows (lambda (window)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                  (with-current-buffer (window-buffer window)</code></span></span>
-<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class=
-"ld"><code>                    (when (or (eq major-mode 'wl-message-mode)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                              (eq major-mode 'mime-view-mode))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                      (when-let* ((object (car (get-buffer-xwidgets (buffer-name))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                  (width (xwidget-window-inside-pixel-width window))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                  (height (xwidget-wl-window-remnant window)))</code></span></span>
-<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class=
-"ld"><code>                        (xwidget-resize object width height)))) 'none frame)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(defun xwidget-wl-window-dispose ()</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (dolist (buffer (buffer-list))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (unless (get-buffer-window buffer)</code></span></span>
-<span class="line"><span class="ln">35 <span class="nsep">|</span></span><span class=
-"ld"><code>      (with-current-buffer buffer</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>        (when (or (eq major-mode 'wl-message-mode)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                  (eq major-mode 'mime-view-mode))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>          (when-let* ((object (car (get-buffer-xwidgets (buffer-name)))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (kill-xwidget object)</code></span></span>
-<span class="line"><span class="ln">40 <span class="nsep">|</span></span><span class=
-"ld"><code>            (kill-buffer (current-buffer))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (xwidget-delete-zombies)))))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(add-to-list 'window-size-change-functions</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>             'xwidget-wl-window-realize)</code></span></span>
-<span class="line"><span class="ln">45 <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(define-advice wl-summary-set-message-buffer-or-redisplay</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (:after (&amp;rest _args) xwidget-wl-window-init)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (xwidget-wl-window-realize)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (xwidget-wl-window-dispose))</code></span></span>
-<span class="line"><span class="ln">50 <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>(define-advice mime-shr-preview-text/html</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (:override (entity _situation) xwidget-wl-render-html)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  (let ((inhibit-read-only t))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>    (insert ".")</code></span></span>
-<span class="line"><span class="ln">55 <span class="nsep">|</span></span><span class=
-"ld"><code>    (let* ((cursor (- (point-max) 1))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>           (source (with-temp-buffer</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                     (mime-insert-text-content entity)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                     (buffer-string)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>           (cookie (make-temp-file "xwidget" nil ".html"))</code></span></span>
-<span class="line"><span class="ln">60 <span class="nsep">|</span></span><span class=
-"ld"><code>           (object (xwidget-insert cursor 'webkit (buffer-name) 1 1)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (set-xwidget-query-on-exit-flag object nil)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (with-temp-file cookie (insert source))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>      (xwidget-webkit-goto-uri object (concat "file://" cookie)))))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(with-eval-after-load 'wl-demo</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (set-face-background 'wl-highlight-demo-face nil))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(eval-when-compile</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (require 'xwidget))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun xwidget-wl-window-remnant (window)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (when-let* ((object (next-single-property-change (point-min) 'display))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              (total (xwidget-window-inside-pixel-height window))</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              (remnant 0))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (save-excursion</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (goto-char (point-min))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (while (&lt; (point) object)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (setq remnant (+ remnant (line-pixel-height)))</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (forward-line 1))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (goto-char (+ object 2))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (while (&lt; (point) (point-max))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (setq remnant (+ remnant (line-pixel-height)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (forward-line 1)))</code></span></span>
+<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (- total (+ remnant 4))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun xwidget-wl-window-realize (&amp;optional frame)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (walk-windows (lambda (window)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                  (with-current-buffer (window-buffer window)</code></span></span>
+<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                    (when (or (eq major-mode 'wl-message-mode)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                              (eq major-mode 'mime-view-mode))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                      (when-let* ((object (car (get-buffer-xwidgets (buffer-name))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  (width (xwidget-window-inside-pixel-width window))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  (height (xwidget-wl-window-remnant window)))</code></span></span>
+<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                        (xwidget-resize object width height)))) 'none frame)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun xwidget-wl-window-dispose ()</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (dolist (buffer (buffer-list))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (unless (get-buffer-window buffer)</code></span></span>
+<span class="line"><span class="ln">35 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (with-current-buffer buffer</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        (when (or (eq major-mode 'wl-message-mode)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                  (eq major-mode 'mime-view-mode))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">          (when-let* ((object (car (get-buffer-xwidgets (buffer-name)))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (kill-xwidget object)</code></span></span>
+<span class="line"><span class="ln">40 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (kill-buffer (current-buffer))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (xwidget-delete-zombies)))))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(add-to-list 'window-size-change-functions</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">             'xwidget-wl-window-realize)</code></span></span>
+<span class="line"><span class="ln">45 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(define-advice wl-summary-set-message-buffer-or-redisplay</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (:after (&amp;rest _args) xwidget-wl-window-init)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (xwidget-wl-window-realize)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (xwidget-wl-window-dispose))</code></span></span>
+<span class="line"><span class="ln">50 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(define-advice mime-shr-preview-text/html</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (:override (entity _situation) xwidget-wl-render-html)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (let ((inhibit-read-only t))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (insert ".")</code></span></span>
+<span class="line"><span class="ln">55 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">    (let* ((cursor (- (point-max) 1))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">           (source (with-temp-buffer</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                     (mime-insert-text-content entity)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                     (buffer-string)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">           (cookie (make-temp-file "xwidget" nil ".html"))</code></span></span>
+<span class="line"><span class="ln">60 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">           (object (xwidget-insert cursor 'webkit (buffer-name) 1 1)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (set-xwidget-query-on-exit-flag object nil)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (with-temp-file cookie (insert source))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">      (xwidget-webkit-goto-uri object (concat "file://" cookie)))))</code></span></span></pre>
   </div>
   <p>XML major mode with RelaxNG based schema-sensitive editing abilities.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package nxml-mode</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :ensure nil</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :config (add-to-list 'rng-schema-locating-files</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>                       (expand-file-name "schema/schemas.xml" user-emacs-directory)))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package nxml-mode</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :ensure nil</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :config (add-to-list 'rng-schema-locating-files</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                       (expand-file-name "schema/schemas.xml" user-emacs-directory)))</code></span></span></pre>
   </div>
   <p>Markdown mode, mainly for <code>gptel</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package markdown-mode</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (setq markdown-enable-math t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>              markdown-hide-urls t</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>              markdown-fontify-code-blocks-natively t))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code> </code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>(with-eval-after-load 'markdown-mode</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (set-face-underline 'markdown-line-break-face nil))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package markdown-mode</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (setq markdown-enable-math t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              markdown-hide-urls t</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              markdown-fontify-code-blocks-natively t))</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(with-eval-after-load 'markdown-mode</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (set-face-underline 'markdown-line-break-face nil))</code></span></span></pre>
   </div>
   <p>For better TeX editing, compile and preview, requires <code>luatex</code>.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package auctex</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "luatex"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :init</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>  (setq-default TeX-engine 'luatex)</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  (setq TeX-check-TeX nil</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>        TeX-parse-self t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>        TeX-view-program-list '(("Preview" "open -a Preview.app %o"))))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package auctex</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "luatex"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (setq-default TeX-engine 'luatex)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (setq TeX-check-TeX nil</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        TeX-parse-self t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">        TeX-view-program-list '(("Preview" "open -a Preview.app %o"))))</code></span></span></pre>
   </div>
   <p>Swift major mode, activated with the <code>swift</code> executable.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package swift-mode</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "swift"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package swift-mode</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "swift"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t)</code></span></span></pre>
   </div>
   <p>OCaml major mode, activated with the <code>ocaml</code> executable.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package tuareg</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "ocaml"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package tuareg</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "ocaml"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t)</code></span></span></pre>
   </div>
   <p>Common Lisp major mode, activated with the <code>sbcl</code> executable.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package sly</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "sbcl"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (setq inferior-lisp-program "sbcl"))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package sly</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "sbcl"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (setq inferior-lisp-program "sbcl"))</code></span></span></pre>
   </div>
   <p>Coq major mode, activated with the <code>coqc</code> executable.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package proof-general</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "coqc"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (setq proof-splash-enable nil</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>              proof-delete-empty-windows t))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package proof-general</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "coqc"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (setq proof-splash-enable nil</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">              proof-delete-empty-windows t))</code></span></span></pre>
   </div>
   <p>The <code>git</code> porcelain inside Emacs.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package magit</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "git"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package magit</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "git"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t)</code></span></span></pre>
   </div>
   <p>Visualize uncommitted changes in the fringle.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package diff-hl</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "git"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t)</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package diff-hl</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "git"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t)</code></span></span></pre>
   </div>
   <p>Some basic spell-checking, activated with the <code>aspell</code> executable.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package flyspell</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :with "aspell"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>  :init (setq ispell-program-name "aspell"))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package flyspell</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :with "aspell"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :init (setq ispell-program-name "aspell"))</code></span></span></pre>
   </div>
   <p>Large language model chat client for Emacs.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-    "ld"><code>(use-package gptel</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  :defer t</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>  :config (let* ((host "models.inference.ai.azure.com")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                 (endpoint "/chat/completions")</code></span></span>
-<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
-"ld"><code>                 (key (funcall (plist-get (car (auth-source-search :host host)) :secret))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>            (setq gptel-model 'gpt-4o</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                  gptel-backend (gptel-make-openai "azure"</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                  :host host</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                  :endpoint endpoint</code></span></span>
-<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
-"ld"><code>                                  :key key</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                  :stream t</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
-"ld"><code>                                  :models '(gpt-4o)))))</code></span></span></pre>
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(use-package gptel</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :defer t</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  :config (let* ((host "models.inference.ai.azure.com")</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                 (endpoint "/chat/completions")</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                 (key (funcall (plist-get (car (auth-source-search :host host)) :secret))))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">            (setq gptel-model 'gpt-4o</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                  gptel-backend (gptel-make-openai "azure"</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  :host host</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  :endpoint endpoint</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  :key key</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  :stream t</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  :models '(gpt-4o)))))</code></span></span></pre>
   </div>
 </body>
 </html>

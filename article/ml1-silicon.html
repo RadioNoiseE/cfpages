@@ -10,7 +10,8 @@
   <title>Install ML/I on Apple Silicon from LOWL Source -- Assembled ML/I Using LLVM</title>
   <link href="/favicon.ico" rel="icon">
   <link href="/static/images/minami.jpg" rel="apple-touch-icon">
-  <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script>
+  <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script><script src=
+  "/script/listing.js"></script>
 </head>
 <body>
   <div class="header">
@@ -46,36 +47,36 @@
   <p><code>ml1-llvm</code> requires LLVM to be installed on your system, as it utilizes <code>llc</code>,
   <code>opt</code> and <code>llvm-as</code>. To build LLVM without other subprojects, these commands will do:</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>git clone --depth 1 https://github.com/llvm/llvm-project.git</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>cd llvm-project</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>cmake -S llvm -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>cd build</code></span></span>
-<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
-"ld"><code>sudo make install -j</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-bash">git clone --depth 1 https://github.com/llvm/llvm-project.git</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">cd llvm-project</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">cmake -S llvm -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">cd build</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">sudo make install -j</code></span></span></pre>
   </div>
   <p>You can also build a standalone version, so that you don't have to install LLVM on your system.</p>
   <h2 id="c3">3. Make ML/I</h2>
   <p>Fetch the LOWL sources and extract <code>ml1ajb.lwl</code>:</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>curl -O "http://www.ml1.org.uk/tgz/lowlml1.tar.gz"</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>unar lowlml1.tar.gz</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-bash">curl -O "http://www.ml1.org.uk/tgz/lowlml1.tar.gz"</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">unar lowlml1.tar.gz</code></span></span></pre>
   </div>
   <p>Then clone the <code>ml1-llvm</code> and make the executable.</p>
   <div class="prewrap">
-    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-    "ld"><code>git clone git@github.com:glguida/ml1-llvm.git</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>cd ml1-llvm</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>make ML1SRC=../lowlml1/ml1ajb.lwl</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
-"ld"><code>sudo install -s -m 755 ml1 /usr/local/bin/ml1</code></span></span></pre>
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-bash">git clone git@github.com:glguida/ml1-llvm.git</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">cd ml1-llvm</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">make ML1SRC=../lowlml1/ml1ajb.lwl</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-bash">sudo install -s -m 755 ml1 /usr/local/bin/ml1</code></span></span></pre>
   </div>
   <p>Enjoy.</p>
 </body>
