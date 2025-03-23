@@ -55,16 +55,16 @@
   <h2 id="c1">1. Why Build a New TeX Distribution</h2>
   <p><em>Finally</em> I decided to build my own TeX distribution<sup><a href="#f1">1</a></sup>, as the current TeXLive
   (even the minimal installation) is too bloated for me. All I need is a basic TeX compiler and a compact directory
-  containing the files TeX reads in. I use Type1 fonts, but I certainly don't need a command line tool to generate font
+  containing the files TeX reads in. I use Type1 fonts, but I certainly don’t need a command line tool to generate font
   maps for me. <code>ls-R</code> database is unnecessary unless there are <em>many</em> files under the directory
-  Kpathsea searches<sup><a href="#f2">2</a></sup>. Strictly speaking, I also don't need LaTeX2e.</p>
+  Kpathsea searches<sup><a href="#f2">2</a></sup>. Strictly speaking, I also don’t need LaTeX2e.</p>
   <h2 id="c2">2. My Choice</h2>
-  <p>I chose LuaTeX as the TeX engine. While it doesn't come with many fancy features out of the box, its functionality
+  <p>I chose LuaTeX as the TeX engine. While it doesn’t come with many fancy features out of the box, its functionality
   can be greatly extended using the embedded Lua scripting language. As the successor to Omega/Aleph, LuaTeX greatly
-  enhances vanilla TeX's multilingual typesetting capabilities. A build-in graphic library <code>mplib</code> is
+  enhances vanilla TeX’s multilingual typesetting capabilities. A build-in graphic library <code>mplib</code> is
   included, which eliminates the need for TikZ and such.</p>
-  <p>The default format is plainTeX, which I found much easier to work with compared to LaTeX2e. It doesn't involve
-  many high-level abstractions (i.e., NFSS2 for font selection), making it more straightforward. It also doesn't
+  <p>The default format is plainTeX, which I found much easier to work with compared to LaTeX2e. It doesn’t involve
+  many high-level abstractions (i.e., NFSS2 for font selection), making it more straightforward. It also doesn’t
   uselessly try to separate format and content, which is really useless when doing <em>non-trivial</em> typesetting.
   There are some drawbacks though, such as a less active community.</p>
   <h2 id="c3">3. Construction</h2>
@@ -73,7 +73,7 @@
   standard TDS. In addition to optimizing file scanning, I removed support for engines other than LuaTeX and eliminated
   support for most helper scripts.</p>
   <h3 id="s3-2">3.2. Engine (LuaTeX)</h3>
-  <p>Nothing special here. I simply compiled LuaTeX inside TeXLive's source tree (and its banner remains) with
+  <p>Nothing special here. I simply compiled LuaTeX inside TeXLive’s source tree (and its banner remains) with
   HarfBuzz. I had tried embedding LuaJIT, but seems like it is incompatible with so many Lua-based macro-packages (like
   <code>luaotfload</code>).</p>
   <h3 id="s3-3">3.3. Fonts and Format</h3>
@@ -83,16 +83,16 @@
   plainTeX. This is bundled in the <code>dist.tar.gz</code> which is released with <span class=
   "term">aplTeX</span>.</p>
   <p>The default format is plainTeX, which has been patched in a way to utilize the extensions of eTeX, pdfTeX, and
-  LuaTeX. It is also Unicode-aware. Additionally, I've added an <code>\everyjob</code> hook so that LuaTeX will read
+  LuaTeX. It is also Unicode-aware. Additionally, I’ve added an <code>\everyjob</code> hook so that LuaTeX will read
   <code>luatex.map</code><sup><a href="#f3">3</a></sup>.</p>
   <h2 id="c4">4. Dist Release</h2>
-  <p>The poor man's version doesn't come with any macro-packages — only plainTeX. I believe external macro-packages are
+  <p>The poor man’s version doesn’t come with any macro-packages — only plainTeX. I believe external macro-packages are
   generally unnecessary for plainTeX, except in a few cases.</p>
-  <p>For these rare cases, I've packaged a few macro-packages. These are mainly for demonstration purposes (showing how
-  the modified TDS works), and to handle some of the complex dependencies (many of which weren't even documented). The
+  <p>For these rare cases, I’ve packaged a few macro-packages. These are mainly for demonstration purposes (showing how
+  the modified TDS works), and to handle some of the complex dependencies (many of which weren’t even documented). The
   packaged ones include:</p>
   <ul>
-    <li><code>luamplib</code>, which offers a convenient way to use LuaTeX's <code>mplib</code> for plotting.</li>
+    <li><code>luamplib</code>, which offers a convenient way to use LuaTeX’s <code>mplib</code> for plotting.</li>
     <li><code>luaotfload</code>, which is the plainTeX migration of the ConTeXt font loader, making it easier to work
     with OTF fonts.</li>
     <li><code>luatexja</code>, which provides high-quality CJK typesetting support.</li>

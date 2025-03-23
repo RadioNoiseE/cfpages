@@ -45,7 +45,7 @@
     </nav>
   </div>
   <h2 id="c1">1. Early Initial Stage</h2>
-  <p>Somewhat trivial, basically about correcting Emacs's behavior early in the startup process, before
+  <p>Somewhat trivial, basically about correcting Emacs’s behavior early in the startup process, before
   <code>init.el</code> is loaded. This ensures the settings which might cause clutter or affect performance are
   avoided, and the initial UI is cleaned up.</p>
   <div class="prewrap">
@@ -133,7 +133,7 @@
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">            (setq exec-path (split-string value path-separator))))))))</code></span></span></pre>
   </div>
-  <p>Set up the Milkypostman's Emacs Lisp package archive.</p>
+  <p>Set up the Milkypostman’s Emacs Lisp package archive.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(with-eval-after-load 'package</code></span></span>
@@ -233,7 +233,7 @@
 <span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">  (set-face-attribute 'variable-pitch nil :family "IBM Plex Serif"))</code></span></span></pre>
   </div>
-  <p>Optimizes the editing experience for large files, based on LdBeth's approach.</p>
+  <p>Optimizes the editing experience for large files, based on LdBeth’s approach.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(setq bidi-display-reordering nil</code></span></span>
@@ -269,7 +269,7 @@
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(electric-pair-mode t)</code></span></span></pre>
   </div>
-  <p>Load Protesilaos' Modus theme, specifically optimized for users with blue-yellow color deficiency.</p>
+  <p>Load Protesilaos’ Modus theme, specifically optimized for users with blue-yellow color deficiency.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(setq modus-themes-common-palette-overrides</code></span></span>

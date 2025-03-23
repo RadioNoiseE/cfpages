@@ -62,7 +62,7 @@
                 <a href="#s2-2"><span class="secno">2.2</span> <span class="content">Church and Curry Typing</span></a>
               </li>
               <li>
-                <a href="#s2-3"><span class="secno">2.3</span> <span class="content">Derivation Rules for Church's
+                <a href="#s2-3"><span class="secno">2.3</span> <span class="content">Derivation Rules for Church’s
                 <span class="math">\(\lambda_\to\)</span></span></a>
               </li>
               <li>
@@ -211,7 +211,7 @@
   <p>Variable occurrences in a lambda term can be divided into three categories: <em>free</em> occurrences,
   <em>bound</em> occurrences and <em>binding</em> occurrences.</p>
   <p>Binding variables are those occurred immediately after a <span class="math">\(\lambda\)</span>. In the
-  construction of a lambda term, the single variable and the variables that aren't bound by the binding variables are
+  construction of a lambda term, the single variable and the variables that aren’t bound by the binding variables are
   free variables. However, during the process of abstraction, an occurrence of <span class="math">\(x\)</span> which is
   free in <span class="math">\(M\)</span> becomes bound in <span class="math">\(\lambda x.M\)</span>; that is,
   abstraction of <span class="math">\(x\)</span> over <span class="math">\(M\)</span> binds all free occurrences of
@@ -229,7 +229,7 @@
   <h3 id="s1-4">1.4. Alpha Conversation</h3>
   <p>Functions in the lambda notation have the property that the <em>name</em> of the binding variable is not
   essential; the name is only used to express the transformation or procedure from input to output. Thus the relation
-  <em>alpha conversation</em> or <em>alpha equivalence</em> is defined to describe this process formally. It's based on
+  <em>alpha conversation</em> or <em>alpha equivalence</em> is defined to describe this process formally. It’s based on
   the possibility of renaming binding (and bound) variables.</p>
   <p><span class="math">\(M^{x\to y}\)</span> denote the result of replacing every free occurrence of <span class=
   "math">\(x\)</span> in <span class="math">\(M\)</span> by <span class="math">\(y\)</span>. The relation <span class=
@@ -372,9 +372,9 @@
   "math">\(\lambda\)</span> while the types of free variables are given in a so-called <em>context</em>
   (<em>basis</em>):</p>
   <div class="math">
-    \[x:\alpha\to\alpha,y:(\alpha\to\alpha)\to\beta\vdash(\lambda z:\beta.\lambda u:\gamma.z)(yx): \gamma\to\beta.\]
+    \[x:\alpha\to\alpha,y:(\alpha\to\alpha)\to\beta\vdash (\lambda z:\beta.\lambda u:\gamma.z)(yx): \gamma\to\beta.\]
   </div>
-  <h3 id="s2-3">2.3. Derivation Rules for Church's <span class="math">\(\lambda_\to\)</span></h3>
+  <h3 id="s2-3">2.3. Derivation Rules for Church’s <span class="math">\(\lambda_\to\)</span></h3>
   <p>The definition of lambda terms have to be modified to incorporate type information. This new set of pre-typed
   <span class="math">\(\Lambda_\mathbb{T}\)</span> is defined by <span class=
   "math">\(\Lambda_\mathbb{T}=V\mid(\Lambda_\mathbb{T}\Lambda_\mathbb{T})\mid(\lambda
@@ -387,7 +387,7 @@
     <li><em>Declaration</em>: a statement with a variable as subject.</li>
     <li><em>Context</em>: a list of declarations with different subjects.</li>
   </ol>
-  <p>Below we give three <em>derivation rules</em> to form a so-called <em>derivation system</em> for Church's
+  <p>Below we give three <em>derivation rules</em> to form a so-called <em>derivation system</em> for Church’s
   <span class="math">\(\lambda_\to\)</span> in the <em>premiss-conclusion</em> format.</p>
   <div class="math">
     \[\begin{array}{lc} (var)&amp;\begin{prooftree}\AXC{$x:\sigma\in\Gamma$}\UIC{$y\vdash x:\sigma$}\end{prooftree}\\
@@ -492,9 +492,9 @@
     "math">\(\tau\)</span> such that <span class="math">\(\Gamma,x:\sigma\vdash M:\tau\)</span> and <span class=
     "math">\(\rho\equiv\sigma\to\tau\)</span>.</li>
   </ol>
-  <p>It's obvious that, in order to build a legal term, its subterms should be legal too. This is the <em>Subterm
+  <p>It’s obvious that, in order to build a legal term, its subterms should be legal too. This is the <em>Subterm
   Lemma</em>.</p>
-  <p>Another important property which applies for Church's <span class="math">\(\lambda_\to\)</span> is that, a term
+  <p>Another important property which applies for Church’s <span class="math">\(\lambda_\to\)</span> is that, a term
   may have <em>at most one</em> type. This ensures that the type, if exists, must be unique. Therefore we also have the
   <em>uniqueness of types</em>.</p>
   <h3 id="s2-8">2.8. Reduction and <span class="math">\(\lambda_\to\)</span></h3>
@@ -514,14 +514,14 @@
   </ol>
   <p>The Church-Rosser Theorem is still valid as types clearly play no role in the reduction process.</p>
   <p>The <em>Subject Reduction</em> states that beta reduction does not affect typability, and even does not change the
-  term's type: if <span class="math">\(\Gamma\vdash L:\rho\)</span> and if <span class=
+  term’s type: if <span class="math">\(\Gamma\vdash L:\rho\)</span> and if <span class=
   "math">\(L\twoheadrightarrow_\beta L'\)</span>, then <span class="math">\(\Gamma\vdash L':\rho\)</span>. Proof can be
   done by inducting the one basic and three compatibility cases of beta reduction.</p>
   <p>Finally, one can prove that there are no infinite reduction sequences in <span class=
   "math">\(\lambda_\to\)</span>, or every legal term is strongly normalization. This is the <em>String Normalization
   Theorem</em> or <em>Termination Theorem</em>.</p>
   <h2 id="c3">3. Second Order Typed Lambda Calculus</h2>
-  <p>In Church's <span class="math">\(\lambda_\to\)</span>, we only encounter abstraction and application on the term
+  <p>In Church’s <span class="math">\(\lambda_\to\)</span>, we only encounter abstraction and application on the term
   level, which is <em>first order</em>, as abstraction and application are over <em>terms</em>. In the present chapter,
   <em>second order</em> operations, or terms depending on types, are introduced.</p>
   <p>This is called the <em>second order lambda calculus</em>, written as <span class="math">\(\lambda2\)</span> for
