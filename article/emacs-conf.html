@@ -770,14 +770,12 @@
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                  (with-current-buffer (window-buffer window)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">                    (when (or (eq major-mode 'wl-message-mode)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">                              (eq major-mode 'mime-view-mode))</code></span></span>
+"lang-lisp">                    (when (eq major-mode 'mime-view-mode)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                      (when-let* ((object (car (get-buffer-xwidgets (buffer-name))))</code></span></span>
-<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">                                  (width (xwidget-window-inside-pixel-width window))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                                  (width (xwidget-window-inside-pixel-width window))</code></span></span>
+<span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                                  (height (xwidget-wl-window-remnant window)))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                        (xwidget-resize object width height)))) 'none frame)))</code></span></span>
@@ -785,67 +783,65 @@
 "lang-lisp">​</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">(defun xwidget-wl-window-dispose ()</code></span></span>
-<span class="line"><span class="ln">35 <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">  (dolist (buffer (buffer-list))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (dolist (buffer (buffer-list))</code></span></span>
+<span class="line"><span class="ln">35 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">    (unless (get-buffer-window buffer)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">      (with-current-buffer buffer</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">        (when (or (eq major-mode 'wl-message-mode)</code></span></span>
+"lang-lisp">        (when (eq major-mode 'mime-view-mode)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">                  (eq major-mode 'mime-view-mode))</code></span></span>
-<span class="line"><span class="ln">40 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">          (when-let* ((object (car (get-buffer-xwidgets (buffer-name)))))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">            (kill-xwidget object)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">40 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">            (kill-buffer (current-buffer))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">            (xwidget-delete-zombies)))))))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">​</code></span></span>
-<span class="line"><span class="ln">45 <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">(add-to-list 'window-size-change-functions</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">             'xwidget-wl-window-realize)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">45 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">​</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">(define-advice wl-summary-set-message-buffer-or-redisplay</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">    (:after (&amp;rest _args) xwidget-wl-window-init)</code></span></span>
-<span class="line"><span class="ln">50 <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">  (xwidget-wl-window-realize)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">  (xwidget-wl-window-dispose))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">50 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">​</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">(define-advice mime-shr-preview-text/html</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">    (:override (entity _situation) xwidget-wl-render-html)</code></span></span>
-<span class="line"><span class="ln">55 <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">  (let ((inhibit-read-only t))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">    (insert ".")</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">55 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">    (let* ((cursor (- (point-max) 1))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">           (source (with-temp-buffer</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                     (mime-insert-text-content entity)</code></span></span>
-<span class="line"><span class="ln">60 <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                     (buffer-string)))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">           (cookie (make-temp-file "xwidget" nil ".html"))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">60 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">           (object (xwidget-insert cursor 'webkit (buffer-name) 1 1)))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">      (set-xwidget-query-on-exit-flag object nil)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">      (with-temp-file cookie (insert source))</code></span></span>
-<span class="line"><span class="ln">65 <span class="nsep">|</span></span><span class="ld"><code class=
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">      (xwidget-webkit-goto-uri object (concat "file://" cookie)))))</code></span></span></pre>
   </div>
   <p>XML major mode with RelaxNG based schema-sensitive editing abilities.</p>
