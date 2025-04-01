@@ -40,6 +40,9 @@
           <li>
             <a href="#c4"><span class="chapno">4</span> <span class="content">Extension Packages</span></a>
           </li>
+          <li>
+            <a href="#c5"><span class="chapno">5</span> <span class="content">Portable Dumper</span></a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -82,6 +85,21 @@
   </div>
   <p>As you can see, there are no redundant GC tweaks.</p>
   <h2 id="c2">2. Initial Stage</h2>
+  <p>Set the <code>load-path</code> explicitly and re-enable previous defaults when portable dumped.</p>
+  <div class="prewrap">
+    <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(defvar dumped-load-path)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(when (boundp 'dumped-load-path)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (setq load-path dumped-load-path)</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (global-font-lock-mode t)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (transient-mark-mode t))</code></span></span></pre>
+  </div>
   <p>The handlers for file names are stripped locally during the very early stages.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
@@ -97,16 +115,14 @@
   <p>Then add <code>core</code> to the load path.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-    "lang-lisp">(mapc (lambda (folder)</code></span></span>
+    "lang-lisp">(dolist (site '("core"))</code></span></span>
 <span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">        (add-to-list 'load-path</code></span></span>
+"lang-lisp">  (add-to-list 'load-path</code></span></span>
 <span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">                     (expand-file-name folder user-emacs-directory)))</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">      '("core"))</code></span></span></pre>
+"lang-lisp">               (expand-file-name site user-emacs-directory)))</code></span></span></pre>
   </div>
   <p>Function used to update the environment variables, particularly <code>PATH</code>, from the shell, so that Emacs
-  can call the correct executables. This is utilized at <a href="#v2-6">Verbatim 2.6</a>.</p>
+  can call the correct executables. This is utilized at <a href="#v2-7">Verbatim 2.7</a>.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(defun env-flush ()</code></span></span>
@@ -144,7 +160,7 @@
   </div>
   <p>Make sure that <code>use-package</code> is loaded during byte-compilation, then prepare it for use.</p>
   <div class="prewrap">
-    <pre id="v2-6"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+    <pre id="v2-7"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(eval-when-compile</code></span></span>
 <span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">  (require 'use-package))</code></span></span>
@@ -992,6 +1008,47 @@
 "lang-lisp">                                  :stream t</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                                  :models '(gpt-4o)))))</code></span></span></pre>
+  </div>
+  <h2 id="c5">5. Portable Dumper</h2>
+  <p>The portable dumper is a subsystem that replaces the traditional <code>unexec</code> method of creating an Emacs
+  pre-loaded with Lisp code and data. This potentially speeds up Emacs boot and responce speed.</p>
+  <div class="prewrap">
+    <pre><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+    "lang-lisp">(package-initialize)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defconst dumped-load-path load-path)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(dolist (site '("early-init" "init"))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (load (concat user-emacs-directory site)))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(load-theme 'modus-operandi-tritanopia t)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(dolist (package '(package use-package treesit which-key</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                           vertico corfu marginalia</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                           yasnippet eldoc-box eww</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                           wanderlust xwidget nxml-mode</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                           markdown-mode auctex magit</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">                           diff-hl flyspell))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">  (require package))</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(dump-emacs-portable "Emacs.pdmp")</code></span></span></pre>
   </div>
 </body>
 </html>
