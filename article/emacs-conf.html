@@ -550,14 +550,16 @@
 <span class="line"><span class="ln">30 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">                          `(,derived . ,default)))))))</code></span></span></pre>
   </div>
-  <p>Key binding hints by <code>which-key</code>.</p>
+  <p>Jumping to arbitrary position using a char-based decision tree by <code>avy</code>.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-    "lang-lisp">(use-package which-key</code></span></span>
+    "lang-lisp">(use-package avy</code></span></span>
 <span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">  :hook (after-init . which-key-mode)</code></span></span>
+"lang-lisp">  :bind (("C-: c" . avy-goto-char)</code></span></span>
 <span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">  :init (which-key-setup-minibuffer))</code></span></span></pre>
+"lang-lisp">         ("C-: x" . avy-goto-char-timer)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">         ("C-: l" . avy-goto-line)))</code></span></span></pre>
   </div>
   <p>Minibuffer completion by <code>vertico</code>.</p>
   <div class="prewrap">
