@@ -1080,36 +1080,34 @@
 <span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">​</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">(dolist (site '("early-init.el" "init.el"))</code></span></span>
+"lang-lisp">(with-temp-buffer</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">  (with-temp-buffer</code></span></span>
+"lang-lisp">  (insert-file-contents (concat user-emacs-directory "init.el"))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">    (insert-file-contents (concat user-emacs-directory site))</code></span></span>
+"lang-lisp">  (goto-char (point-min))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">    (goto-char (point-min))</code></span></span>
+"lang-lisp">  (condition-case error</code></span></span>
 <span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">    (condition-case error</code></span></span>
+"lang-lisp">      (while-let ((form (read (current-buffer))))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">        (while-let ((form (read (current-buffer))))</code></span></span>
+"lang-lisp">        (pcase form</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">          (pcase form</code></span></span>
+"lang-lisp">          (`(use-package ,package . ,rest)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">            (`(use-package ,package . ,rest)</code></span></span>
+"lang-lisp">           (unless (memq package dumped-load-mask)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">             (unless (memq package dumped-load-mask)</code></span></span>
+"lang-lisp">             (require package nil t)))))</code></span></span>
 <span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">               (message "(require %s%s)" "\N{APOSTROPHE}" package)</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">               (require package nil t)))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">            (_ (eval form))))</code></span></span>
-<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">      (end-of-file nil))))</code></span></span>
+"lang-lisp">    (end-of-file nil)))</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">​</code></span></span>
-<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">(defun dumped-init ()</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(load-theme 'modus-operandi-tritanopia t t)</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">(defun dumped-init ()</code></span></span>
+<span class="line"><span class="ln">20 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">  (global-font-lock-mode t)</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">  (transient-mark-mode t))</code></span></span>
@@ -1117,9 +1115,9 @@
 "lang-lisp">​</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">(add-hook 'emacs-startup-hook 'dumped-init)</code></span></span>
-<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">​</code></span></span>
 <span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code class=
+"lang-lisp">​</code></span></span>
+<span class="line"><span class="ln">25 <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">(dump-emacs-portable "Emacs.pdmp")</code></span></span></pre>
   </div>
 </body>
