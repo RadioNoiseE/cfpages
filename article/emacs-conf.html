@@ -99,15 +99,13 @@
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(setq-local file-name-handler-alist nil)</code></span></span></pre>
   </div>
-  <p>Short answers are activated, boot splash screen is inhibited, implicit resize of the echo area is disabled, and
-  <code>custom</code> is instructed not to modify <code>init.el</code>.</p>
+  <p>Short answers are activated, boot splash screen is inhibited, and <code>custom</code> is instructed not to modify
+  <code>init.el</code>.</p>
   <div class="prewrap">
     <pre><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
     "lang-lisp">(setq use-short-answers t</code></span></span>
 <span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">      inhibit-startup-screen t</code></span></span>
-<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
-"lang-lisp">      max-mini-window-height 1</code></span></span>
 <span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code class=
 "lang-lisp">      custom-file (make-temp-file "custom" nil ".el"))</code></span></span></pre>
   </div>
