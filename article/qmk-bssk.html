@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Apple macOS version 5.8.0">
+  <meta charset="utf-8">
+  <meta name="creator" content="RsML1">
+  <meta name="author" content="Jing Huang">
+  <meta name="pubdate" content="2025-05-20">
+  <title>Porting the Latest QMK to BSSK R1 -- With Atmel AVR Controller from Model F Labs</title>
+  <link href="/favicon.ico" rel="icon">
+  <link href="/static/images/minami.jpg" rel="apple-touch-icon">
+  <link href="/style/art.css" rel="stylesheet"><script src="/script/math.js"></script><script src=
+  "/script/listing.js"></script>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">Porting the Latest QMK to BSSK R1</h1>
+    <h2 class="subtitle">With Atmel AVR Controller from Model F Labs</h2>
+    <div class="status">
+      <p>Published on 20 May 2025 by Jing Huang.</p>
+    </div>
+    <nav id="lot">
+      <h2>Table of Contents</h2>
+      <div class="toc">
+        <ul>
+          <li>
+            <a href="#c1"><span class="chapno">1</span> <span class="content">Background</span></a>
+          </li>
+          <li>
+            <a href="#c2"><span class="chapno">2</span> <span class="content">Vial or QMK</span></a>
+          </li>
+          <li>
+            <a href="#c3"><span class="chapno">3</span> <span class="content">Where to Start</span></a>
+            <ul class="toc">
+              <li>
+                <a href="#s3-1"><span class="secno">3.1</span> <span class="content">QMK Environment</span></a>
+              </li>
+              <li>
+                <a href="#s3-2"><span class="secno">3.2</span> <span class="content">Obtaining Patches</span></a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#c4"><span class="chapno">4</span> <span class="content">Customization</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <h2 id="c1">1. Background</h2>
+  <p>After roughly 2 months wait, my IBM Beam Spring keyboard reproduction from Model F Labs finally arrived. I opted
+  for the Round 1 version because I like the Space Saver compact case which is not available in the Round 2 products,
+  though they have arguably better QC and a press fit top which eliminates quiet a few minor issues when tuning each
+  module.</p>
+  <p>Satisfied with the hardware, I was eager to see what I could do to reveal the true power of its built-in
+  controller, and that’s exactly where this article begins.</p>
+  <div class="tip">
+    <p>Don’t forget to check out <a href="https://ldbeth.sdf.org/articles/qmk">this article</a> written by LdBeth. The
+    author is also grateful for his invaluable guidance in addressing numerous issues encountered.</p>
+  </div>
+  <h2 id="c2">2. Vial or QMK</h2>
+  <p>The keyboard comes with the pre-flashed Vial firmware, which is a QMK fork for <q>configuring your keyboard in
+  real time</q>. Sounds good, but what are the costs? It stores all configurable options into the 1kb EEPROM, including
+  your keyboard layout. This makes the storage rather limited, restricting you to just 3 layers and 10 macros.</p>
+  <p>Despite that, you miss out on those fancy features that are only available in the latest QMK, like dynamic macros,
+  deferred execution, and more. If you want more granularity, QMK is the clear choice. Anyway, there’s not much to gain
+  from the real-time configuring capabilities, especially when your configuration is settled.</p>
+  <h2 id="c3">3. Where to Start</h2>
+  <h3 id="s3-1">3.1. QMK Environment</h3>
+  <p>In the best situations, your package manager might have packaged QMK for you. However, for me on Darwin using
+  pkgsrc, things started to get a bit more complicated. For this specific keyboard, I needed <code>avr-gcc</code> which
+  is part of the AVR MCU toolchain available on Microchip’s website<sup><a href="#f1">1</a></sup> and
+  <code>dfu-programmer</code> for flashing firmware.</p>
+  <h3 id="s3-2">3.2. Obtaining Patches</h3>
+  <p>Fortunately, Purdea Andrei has worked on an old QMK fork which provides support for wcass<sup><a href=
+  "#f2">2</a></sup> controllers. We should use the <code>9e92bbf</code> commit. Essentially, these patches override the
+  default matrix initialize and scan function for capacitive sensing.</p>
+  <h2 id="c4">4. Customization</h2>
+  <p>After successfully building your very first QMK firmware, you should assign a key for <code>QK_BOOT</code>. This
+  will save you from having to unscrew 12 screws and open the back-lid just to short <code>PROG</code> to enter the
+  bootloader for flashing.</p>
+  <p>In fact, no substantial modification to the patch or to the QMK side is required, though the userspace for QMK has
+  changed a lot. <code>qmk lint</code> will guide you through updating the legacy <code>config.h</code> and
+  <code>rules.mk</code>. When incorporating the new features like boot magic, keep SRAM usage in mind or you will
+  soft-brick your controller.</p>
+  <p>The only thing that doesn’t work is the raw hid, which I chose to drop. Thus, to squeeze space for those more
+  useful features, some global variables solely used by it can be declared local. Note that the Pandrew utility can no
+  longer be used, so make sure your keyboard is detecting the signals beforehand.</p>
+  <footer>
+    <div class="footnotes">
+      <hr>
+      <div class="footnote">
+        <div class="footno">
+          <sup><a id="f1">1</a></sup>
+        </div>
+        <div class="footbody">
+          The one pkgsrc provides lacks the link-time optimization feature.
+        </div>
+      </div>
+      <div class="footnote">
+        <div class="footno">
+          <sup><a id="f2">2</a></sup>
+        </div>
+        <div class="footbody">
+          Modified xwhatsit controller for capacitive keyboard produced by Model F Labs.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
