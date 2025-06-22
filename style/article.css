@@ -2,7 +2,6 @@
    Copyright (C) 2025, Jing Huang <RadioNoiseE@gmail.com> */
 
 @import "font.css";
-@import "smt.css";
 
 ::selection {
     background-color: #bdbdbd;
@@ -215,6 +214,7 @@ div.math {
 }
 
 .prewrap {
+    margin-block-end: .83em;
     overflow-x: auto;
 }
 
@@ -314,6 +314,7 @@ cite.year {
 
 .footnotes {
     font-size: 90%;
+    margin-block-end: .83em;
     margin-left: -.85em;
     margin-top: 1.6em;
 }
