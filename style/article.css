@@ -90,6 +90,10 @@ body {
         margin-left: 1em;
     }
 
+    .toc > li:first-child {
+        margin-top: .1em;
+    }
+
     .toc > li:not(:first-child) {
         margin-top: 0;
     }
@@ -329,12 +333,12 @@ cite.year {
 }
 
 .footnote {
+    display: flex;
     margin: .2em 0;
 }
 
 .footno {
-    display: inline-block;
-    width: .65em;
+    flex: 0 0 1.2em;
 }
 
 .footbody {

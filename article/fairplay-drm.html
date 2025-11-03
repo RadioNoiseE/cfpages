@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Apple macOS version 5.8.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="creator" content="RsML1">
+  <meta name="author" content="Jing Huang">
+  <meta name="pubdate" content="2025-11-03">
+  <title>Bypass Apples FairPlay DRM for Penetration Tests -- Decrypting Mach-O Bundled in iOS Application
+  Archive</title>
+  <link href="/favicon.ico" rel="icon">
+  <link href="/static/images/minami.jpg" rel="apple-touch-icon">
+  <link href="/style/article.css" rel="stylesheet">
+  <script src="/script/math.js"></script>
+  <script src="/script/listing.js" type="module"></script>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">Bypass Apple’s FairPlay DRM for Penetration Tests</h1>
+    <h2 class="subtitle">Decrypting Mach-O Bundled in iOS Application Archive</h2>
+    <div class="status">
+      <p>Published on 03 November 2025 by Jing Huang.</p>
+    </div>
+    <div class="abstract">
+      <p>This article presents a technical analysis of runtime Mach-O decryption techniques for iOS application
+      security research, based on a binary dumper implementation in C originally developed by Stefan Esser in 2011 and
+      later enhanced by Conrad Kramer. This allows us to bypass FairPlay DRM protection during penetration tests
+      through runtime memory access when encrypted binaries exist in their decrypted state.</p>
+    </div>
+    <nav id="lot">
+      <h2>Table of Contents</h2>
+      <div class="toc">
+        <ul>
+          <li>
+            <a href="#c1"><span class="chapno">1</span> <span class="content">Introduction</span></a>
+          </li>
+          <li>
+            <a href="#c2"><span class="chapno">2</span> <span class="content">Implementation</span></a>
+            <ul class="toc">
+              <li>
+                <a href="#s2-1"><span class="secno">2.1</span> <span class="content">Header Files</span></a>
+              </li>
+              <li>
+                <a href="#s2-2"><span class="secno">2.2</span> <span class="content">Helper Function</span></a>
+              </li>
+              <li>
+                <a href="#s2-3"><span class="secno">2.3</span> <span class="content">Constructor</span></a>
+              </li>
+              <li>
+                <a href="#s2-4"><span class="secno">2.4</span> <span class="content">Queue Function</span></a>
+              </li>
+              <li>
+                <a href="#s2-5"><span class="secno">2.5</span> <span class="content">Decrypter</span></a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#c3"><span class="chapno">3</span> <span class="content">Instructions</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <h2 id="c1">1. Introduction</h2>
+  <p>Apple’s FairPlay DRM system encrypts specific parts of the <code>__TEXT</code> segment<sup><a href=
+  "#f1">1</a></sup> within Mach-O executable files of iOS applications distributed through the App Store. This
+  encryption is designed to protect the intellectual property of developers and prevent unauthorized modification or
+  distribution of applications.</p>
+  <p>When an encrypted application launches, iOS automatically decrypts the <code>__TEXT</code> segment into memory for
+  execution. This means the decrypted segment is accessible through runtime introspection.</p>
+  <p>There are various ways to inject a dynamic library into a running process and thus access its memory, name a
+  few:</p>
+  <ul>
+    <li><code>DYLD_INSERT_LIBRARIES</code>, instructing the dynamic loader to load libraries into a process at launch
+    time.</li>
+    <li>Task port injection, allocating memory in a target process and create a remote thread loading libraries.</li>
+    <li>ROP/JOP chain injection, constructing a sequence of existing code gadgets.</li>
+    <li>Substrate/Substitute hooking, based on runtime hooking frameworks to modify function implementations.</li>
+    <li>Debugger injection, attaching <code>lldb</code> to the target process and execute <code>dlopen()</code>.</li>
+  </ul>
+  <p>In this article, we will only cover the <code>DYLD_INSERT_LIBRARIES</code> approach, which is the simplest and
+  most robust at cost of flexibility. Encrypted segments are located using <code>LC_ENCRYPTION_INFO</code>.</p>
+  <div class="note">
+    <p>Recent iOS hardening prevents non-system processes from spawning containerized apps, while entitlement
+    workarounds that try to fake a platform binary will break framework loading<sup><a href="#f2">2</a></sup>. To
+    inject dynamic libraries into running process, we can use MobileSubstrate instead; however the idea is essentially
+    the same.</p>
+  </div>
+  <h2 id="c2">2. Implementation</h2>
+  <p>So here is the implementation in C, for decrypting protected images, with explanations. The full implementation is
+  also available on <a href="https://github.com/RadioNoiseE/fairplay">GitHub</a>. Explanation will be divided into
+  sections, and only basic knowledge on the C programming language is assumed.</p>
+  <h3 id="s2-1">2.1. Header Files</h3>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+    "ld"><code>#include &lt;dlfcn.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;fcntl.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;mach-o/dyld.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;mach-o/fat.h&gt;</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;mach-o/loader.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;stdarg.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;stdint.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;stdio.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;stdlib.h&gt;</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;string.h&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>#include &lt;unistd.h&gt;</code></span></span></pre>
+  </div>
+  <p>Structure containing information of dynamic linking is provided by <code>dlfcn.h</code>, and low-level file input
+  and output is provided by <code>fcntl.h</code>. The three headers under <code>mach-o</code> folder provides dynamic
+  linker interface, fat (universal) binary related information, and Mach-O binary format structures respectively.</p>
+  <h3 id="s2-2">2.2. Helper Function</h3>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+    "ld"><code>static inline uint32_t bswap32 (uint32_t value) {</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  return ((value & 0xFF000000) &gt;&gt; 24) | ((value & 0x00FF0000) &gt;&gt; 8) |</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>         ((value & 0x0000FF00) &lt;&lt; 8) | ((value & 0x000000FF) &lt;&lt; 24);</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>This function performs a byte swap, reversing the byte order of a 32-bit integer, which is used for conversion
+  between big-endian and little-endian representations. This is used in handling fat (universal) binaries when the
+  magic constant has value <code>FAT_CIGAM</code><sup><a href="#f3">3</a></sup>, that all multi-byte values require
+  swapping on little-endian devices.</p>
+  <h3 id="s2-3">2.3. Constructor</h3>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>__attribute__ ((constructor)) static void dump () {</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  _dyld_register_func_for_add_image (&amp;queue);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>The <code>constructor</code> attribute tells the compiler that this function will get called right after the
+  shared library get loaded, adding a hook to execute the callback function <code>queue</code> every time a new Mach-O
+  image gets loaded into the memory.</p>
+  <p>This will ensure that every encrypted image including frameworks that is been used in the target application is
+  being processed by function <code>queue</code>, which acts exactly like a queue.</p>
+  <h3 id="s2-4">2.4. Queue Function</h3>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>static void queue (const struct mach_header *mh, intptr_t slide) {</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  Dl_info ii;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  dladdr (mh, &amp;ii);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  decrypt (ii.dli_fname, mh);</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>What this function does is using the Mach-O header being passed in to get the actual path to that image using
+  <code>dlfcn.h</code> provided <code>dladdr</code>, then hand it together with the header, to the function
+  <code>decrypt</code> which does all the heavy job.</p>
+  <h3 id="s2-5">2.5. Decrypter</h3>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+    "ld"><code>int      in_fd, out_fd;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>long     pos_tmp;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>char     buffer[4096], in_path[4096], out_path[4096], *str_tmp;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>off_t    off_cid, off_rest, off_read;</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
+"ld"><code>uint32_t off_tmp = 0, int_tmp = 0, zero = 0;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code>​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>struct fat_arch                *fa;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>struct fat_header              *fh;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>struct load_command            *lc;</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
+"ld"><code>struct encryption_info_command *eic;</code></span></span></pre>
+  </div>
+  <p>Receiving the path to the image, and the header, this is where the actual decrypting is done. But first we declare
+  the variables that we will be using. This function itself receives <code>*path</code> and <code>*mh</code>, from the
+  queue.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+    "ld"><code>switch (mh-&gt;magic) {</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>case MH_MAGIC:</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  lc = (struct load_command *) ((unsigned char *) mh +</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>                                sizeof (struct mach_header));</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
+"ld"><code>  break;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>case MH_MAGIC_64:</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  lc = (struct load_command *) ((unsigned char *) mh +</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>                                sizeof (struct mach_header_64));</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  break;</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
+"ld"><code>default:</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  _exit (1);</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>Here we find the start of the load command area using offset of the memory pointer to header and its size, since
+  load command is located right after the header. When the magic number in header is unknown, we escape.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>if (realpath (path, in_path) == NULL)</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  strlcpy (in_path, path, sizeof (in_path));</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>str_tmp = strrchr (in_path, '/');</code></span></span></pre>
+  </div>
+  <p>Stores the base name of the target by chopping everything before the last path-separator <code>/</code> in
+  <code>str_cmp</code>.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>for (int i = 0; i &lt; mh-&gt;ncmds; i++) {</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  if (lc-&gt;cmd == LC_ENCRYPTION_INFO || lc-&gt;cmd == LC_ENCRYPTION_INFO_64) {</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>    eic = (struct encryption_info_command *) lc;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>    if (eic-&gt;cryptid == 0)</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
+"ld"><code>      break;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>    // to be continued</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code>  }</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  lc = (struct load_command *) ((unsigned char *) lc + lc-&gt;cmdsize);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>Starting at the beginning of the load commands, we iterate through each of the <code>ncms</code> commands, until
+  we reach the encryption info command, then cast it to <code>encryption_info_command</code> for further processing. It
+  stops early when there is nothing to decrypt.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>off_cid = ((unsigned char *) &amp;eic-&gt;cryptid - (unsigned char *) mh);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>in_fd   = open (in_path, O_RDONLY);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>int_tmp = read (in_fd, (void *) buffer, sizeof (buffer));</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>fh      = (struct fat_header *) buffer;</code></span></span></pre>
+  </div>
+  <p>We first store the offset of the <code>cryptid</code> relative to the image in the memory so later we can
+  overwrite it with the value zero, standing for not encrypted image. Then we open the target image, and read in 4kb
+  data (which is much larger than any possible fat header) to <q>reinterpret cast</q> it to
+  <code>fat_header</code>.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+    "ld"><code>switch (fh-&gt;magic) {</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>case FAT_CIGAM:</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  fa = (struct fat_arch *) (fh + 1);</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  for (int i = 0; i &lt; bswap32 (fh-&gt;nfat_arch); i++, fa++) {</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
+"ld"><code>    if (mh-&gt;cputype == bswap32 (fa-&gt;cputype) &amp;&</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>        mh-&gt;cpusubtype == bswap32 (fa-&gt;cpusubtype)) {</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>      off_tmp = bswap32 (fa-&gt;offset);</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>      break;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>    }</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
+"ld"><code>  }</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  break;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>case MH_MAGIC:</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>case MH_MAGIC_64:</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  break;</code></span></span>
+<span class="line"><span class="ln">15 <span class="nsep">|</span></span><span class=
+"ld"><code>default:</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  _exit (1);</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>Here we store in <code>off_tmp</code> the offset to correct slice when we have a fat image that contains multiple
+  slices of images. Note that all values are stored in bit-endian and require swapping.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>strlcpy (out_path, getenv ("HOME"), sizeof (out_path));</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>strlcat (out_path, "/tmp/", sizeof (out_path));</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>strlcat (out_path, str_tmp + 1, sizeof (out_path));</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>strlcat (out_path, ".d", sizeof (out_path));</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
+"ld"><code>out_fd = open (out_path, O_RDWR | O_CREAT | O_TRUNC, 0644);</code></span></span></pre>
+  </div>
+  <p>Create the output file in the application container root, which makes sandbox happy.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>int_tmp  = off_tmp + eic-&gt;cryptoff;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>off_rest = lseek (in_fd, 0, SEEK_END) - int_tmp - eic-&gt;cryptsize;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>lseek (in_fd, 0, SEEK_SET);</code></span></span></pre>
+  </div>
+  <p>Put the absolute file offset to the start of the encrypted region into <code>int_tmp</code>, and the number of
+  bytes remained after the encrypted region into <code>off_rest</code>. Then we reset the read position back to the
+  start of file.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>while (int_tmp &gt; 0) {</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  off_read = int_tmp &gt; sizeof (buffer) ? sizeof (buffer) : int_tmp;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  pos_tmp  = read (in_fd, buffer, off_read);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  pos_tmp  = write (out_fd, buffer, off_read);</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
+"ld"><code>  int_tmp -= off_read;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>Copy the first not encrypted part, that is, everything before the encrypted region which offset is known.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>pos_tmp =</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>    write (out_fd, (unsigned char *) mh + eic-&gt;cryptoff, eic-&gt;cryptsize);</code></span></span></pre>
+  </div>
+  <p>Then we write the decrypted in-memory segment after the header.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>int_tmp = off_rest;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>lseek (in_fd, eic-&gt;cryptsize, SEEK_CUR);</code></span></span></pre>
+  </div>
+  <p>Get the iterator variable ready, and set the file position pointer to the start of the final not encrypted
+  region.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>while (int_tmp &gt; 0) {</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  off_read = int_tmp &gt; sizeof (buffer) ? sizeof (buffer) : int_tmp;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  pos_tmp  = read (in_fd, buffer, off_read);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  pos_tmp  = write (out_fd, buffer, off_read);</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
+"ld"><code>  int_tmp -= off_read;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>Finally, copy the not encrypted remainder to the decrypted image.</p>
+  <div class="prewrap">
+    <pre class="c"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>if (off_cid) {</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  off_cid += off_tmp;</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  if (lseek (out_fd, off_cid, SEEK_SET) != off_cid ||</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>      write (out_fd, &amp;zero, 4) != 4)</code></span></span>
+<span class="line"><span class="ln">5 <span class="nsep">|</span></span><span class=
+"ld"><code>    _exit (1);</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>}</code></span></span></pre>
+  </div>
+  <p>To make this an unencrypted image, the last step is to overwrite the <code>cryptid</code>, indicating that this
+  image is no longer encrypted. Afterward, the file descriptors should be closed, though modern operating system
+  typically handle this.</p>
+  <h2 id="c3">3. Instructions</h2>
+  <p>The following command compiles it into a arm64 iOS dynamic library, with Xcode installed.</p>
+  <div class="prewrap">
+    <pre class="sh"><span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+    "ld"><code>xcrun --sdk iphoneos clang -arch arm64 -dynamiclib -Os               \</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  -isysroot `xcrun --sdk iphoneos --show-sdk-path`                   \</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  -F`xcrun --sdk iphoneos --show-sdk-path`/System/Library/Frameworks \</code></span></span>
+<span class="line"><span class="ln">  <span class="nsep">|</span></span><span class=
+"ld"><code>  fairplay.c -o fairplay.dylib</code></span></span></pre>
+  </div>
+  <p>This dynamic library should be at least ad-hoc signed, using either <code>codesign -fs -</code> or <code>ldid
+  -S</code>, then placed in <code>/Library/MobileSubstrate/DynamicLibraries/</code>, with the following
+  filter<sup><a href="#f4">4</a></sup>.</p>
+  <div class="prewrap">
+    <pre class="xml"><span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+    "ld"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class="ld"><code>​</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>&lt;plist version="1.0"&gt;</code></span></span>
+<span class="line"><span class="ln"> 5 <span class="nsep">|</span></span><span class=
+"ld"><code>  &lt;dict&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>    &lt;key&gt;Filter&lt;/key&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>    &lt;dict&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>      &lt;key&gt;Bundles&lt;/key&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>      &lt;array&gt;</code></span></span>
+<span class="line"><span class="ln">10 <span class="nsep">|</span></span><span class=
+"ld"><code>        &lt;string&gt;com.YoStarJP.Arknights&lt;/string&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>      &lt;/array&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>    &lt;/dict&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>  &lt;/dict&gt;</code></span></span>
+<span class="line"><span class="ln">   <span class="nsep">|</span></span><span class=
+"ld"><code>&lt;/plist&gt;</code></span></span></pre>
+  </div>
+  <p>After launching <code>com.YoStarJP.Arknights</code>, this library will be injected, dumping the decrypted
+  image.</p>
+  <footer>
+    <div class="footnotes">
+      <hr>
+      <div class="footnote">
+        <div class="footno">
+          <sup><a id="f1">1</a></sup>
+        </div>
+        <div class="footbody">
+          Containing <code>__text</code> (the compiled machine code), <code>__const</code> (general constant data),
+          <code>__cstring</code> (literal string constants) and <code>__picsymbol_stub</code> (position-independent
+          code stub routines used by <code>dyld</code>).
+        </div>
+      </div>
+      <div class="footnote">
+        <div class="footno">
+          <sup><a id="f2">2</a></sup>
+        </div>
+        <div class="footbody">
+          Non-platform frameworks are rejected by <code>dyld</code> with <q>mapping process is a platform binary, but
+          mapped file is not.</q>
+        </div>
+      </div>
+      <div class="footnote">
+        <div class="footno">
+          <sup><a id="f3">3</a></sup>
+        </div>
+        <div class="footbody">
+          <code>CIGAM</code> is the reverse of <code>MAGIC</code>, itself indicating big-endian representation.
+        </div>
+      </div>
+      <div class="footnote">
+        <div class="footno">
+          <sup><a id="f4">4</a></sup>
+        </div>
+        <div class="footbody">
+          Filters are implemented as <code>.plist</code> that lives beside the <code>.dylib</code>, with identical base
+          name.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

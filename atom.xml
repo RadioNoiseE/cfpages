@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Archive RnE</title>
+  <subtitle>开擺すればいいんだよ</subtitle>
+  <author>
+    <name>Jing Huang</name>
+    <email>radionoisee@gmail.com</email>
+  </author>
+  <id>https://kekkan.org/</id>
+
+  <link type="text/html" rel="alternate" href="https://kekkan.org/index.html"/>
+  <link type="application/atom+xml" rel="self" href="https://kekkan.org/atom.xml"/>
+  <icon>https://kekkan.org/favicon.ico</icon>
+  <logo>https://kekkan.org/static/images/minami.jpg</logo>
+
+  <rights>Copyright 2024-2025 Jing Huang</rights>
+  <updated>2025-11-03T00:01:00Z</updated>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#12</id>
+    <link rel="alternate" href="https://kekkan.org/article/fairplay-drm.xml"/>
+    <title>New article about FairPlay DRM</title>
+    <published>2025-11-03T00:01:00Z</published>
+    <updated>2025-11-03T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Decrypting Mach-O images protected by FairPlay DRM for
+        security research purposes. C implementation with
+        MobileSubstrate-based injection method.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#11</id>
+    <link rel="alternate" href="https://kekkan.org/article/qmk-bssk.xml"/>
+    <title>New article about latest QMK for BSSK R1</title>
+    <published>2025-05-20T00:01:00Z</published>
+    <updated>2025-05-20T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Porting the latest QMK firmware to the IBM Beam Spring
+        Space Saver keyboard, bypassing Vial&#8217;s limitations and
+        unlocking advanced features.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#10</id>
+    <link rel="alternate" href="https://kekkan.org/article/emacs-conf.xml"/>
+    <title>Updated article on Emacs configuration after refactoring</title>
+    <published>2025-05-02T00:01:00Z</published>
+    <updated>2025-05-02T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>After refactoring, the configuration is further
+        flattened. Parts are separated, especially the prelude and the
+        actual management of packages. Another notable update is on
+        the mode line.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#9</id>
+    <link rel="alternate" href="https://kekkan.org/article/emacs-conf.xml"/>
+    <title>New article which documents my Emacs configuration</title>
+    <published>2025-03-12T00:01:00Z</published>
+    <updated>2025-03-23T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Emacs configuration designed specifically for the NeXTStep
+        Cocoa implementation, focusing on simplicity, avoiding complex
+        abstractions, while incorporating a few handy patches.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:news#3</id>
+    <link rel="alternate" href="https://kekkan.org/index.html#n3"/>
+    <title>Component for math equations updated</title>
+    <published>2025-03-03T00:01:00Z</published>
+    <updated>2025-03-03T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Updated MathJax to version 4.0 beta for linebreak and math
+        font support for the SVG output backend and correct bounding
+        box for <i>BussProofs</i>.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:news#2</id>
+    <link rel="alternate" href="https://kekkan.org/index.html#n2"/>
+    <title>Article entries about types updated</title>
+    <published>2025-02-12T00:01:00Z</published>
+    <updated>2025-02-12T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Since I&#8217;ve learnt more about type theory, I&#8217;m
+        updating some of the entries (aka, holes).</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#8</id>
+    <link rel="alternate" href="https://kekkan.org/article/ttafp-note.xml#c5"/>
+    <title>New chapter about type dependent on terms</title>
+    <published>2025-02-10T00:01:00Z</published>
+    <updated>2025-02-10T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The new chapter for <i>Type Theory and Formal Proof</i> is
+        about type dependent on terms, also known as dependent types,
+        an overlapping feature of type theory and type systems.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#7</id>
+    <link rel="alternate" href="https://kekkan.org/article/ttafp-note.xml#c4"/>
+    <title>New chapter about type dependent on types</title>
+    <published>2025-02-09T00:01:00Z</published>
+    <updated>2025-02-09T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The new chapter for <i>Type Theory and Formal Proof</i> is
+        about type dependent on types, which provides a way to
+        construct generalized types.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#6</id>
+    <link rel="alternate" href="https://kekkan.org/article/ttafp-note.xml#c3"/>
+    <title>New chapter about second order lambda calculus</title>
+    <published>2025-02-07T00:01:00Z</published>
+    <updated>2025-02-07T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The new chapter for <i>Type Theory and Formal Proof</i> is
+        about second order lambda calculus, which extends simply typed
+        lambda calculus by allowing types to be functions that can
+        take other types as arguments and return types as results.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:news#1</id>
+    <link rel="alternate" href="https://kekkan.org/index.html#n1"/>
+    <title>HTML mirror established and feature LdBeth</title>
+    <published>2025-02-06T00:01:00Z</published>
+    <updated>2025-02-06T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Mirror site which serves HTML5 instead of RsML is now
+        available, hosting service provided by CloudFlare. Also
+        specially feature LdBeth&#8217;s homepage.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#5</id>
+    <link rel="alternate" href="https://kekkan.org/article/ttafp-note.xml#c2"/>
+    <title>New chapter about simply typed lambda calculus</title>
+    <published>2025-01-31T00:01:00Z</published>
+    <updated>2025-01-31T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The new chapter for <i>Type Theory and Formal Proof</i> is
+        about simply typed lambda calculus, a variant of lambda
+        calculus where each term is assigned a specific type.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#4</id>
+    <link rel="alternate" href="https://kekkan.org/article/apltex-dist.xml"/>
+    <title>New article about my minified TeX distribution</title>
+    <published>2024-12-20T00:01:00Z</published>
+    <updated>2024-12-20T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Article about my plainTeX distribution built on top of
+        Web2C and LuaTeX, which entire installation is less than
+        <code>20mb</code>.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#3</id>
+    <link rel="alternate" href="https://kekkan.org/article/ml1-silicon.xml"/>
+    <title>New article about installing assembled ML/I on M3</title>
+    <published>2024-12-02T00:01:00Z</published>
+    <updated>2024-12-02T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Article about assembling ML/I on Apple silicon using the
+        LOWL to LLVM map available. A short one.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#2</id>
+    <link rel="alternate" href="https://kekkan.org/article/gentoo-efi.xml"/>
+    <title>New article about gentoo system boot using EFI stub</title>
+    <published>2024-11-02T00:01:00Z</published>
+    <updated>2024-11-02T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Article about a modern system booting practice by
+        leveraging the EFI system partition to directly load the
+        kernel, a fast, clean, and robust approach.</p>
+      </div>
+    </summary>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:article#1</id>
+    <link rel="alternate" href="https://kekkan.org/article/ttafp-note.xml#c1"/>
+    <title>New chapter about untyped lambda calculus</title>
+    <published>2024-08-18T00:01:00Z</published>
+    <updated>2024-08-18T00:01:00Z</updated>
+    <summary type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The first chapter for <i>Type Theory and Formal Proof</i>
+        presents a formal system for expressing computation based on
+        function abstraction and application, where all functions and
+        variables are treated as untyped.</p>
+      </div>
+    </summary>
+  </entry>
+</feed>

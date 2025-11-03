@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Memoir RnE</title>
+  <subtitle>开擺すればいいんだよ</subtitle>
+  <author>
+    <name>Jing Huang</name>
+    <email>radionoisee@gmail.com</email>
+  </author>
+  <id>https://kekkan.org/</id>
+
+  <link type="text/html" rel="alternate" href="https://kekkan.org/index.html"/>
+  <link type="application/atom+xml" rel="self" href="https://kekkan.org/memoir.xml"/>
+  <icon>https://kekkan.org/favicon.ico</icon>
+  <logo>https://kekkan.org/static/images/minami.jpg</logo>
+
+  <rights>Copyright 2024-2025 Jing Huang</rights>
+  <updated>2025-06-03T16:54:46Z</updated>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#8</id>
+    <title>Emacs color theme</title>
+    <published>2025-06-03T16:54:46Z</published>
+    <updated>2025-06-03T16:54:46Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Want to design a new Emacs color theme inspired by the
+        color palette from the anime <i>Jinrui wa Suitai
+        Shimashita</i>.</p>
+      </div>
+    </content>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#7</id>
+    <title>Not a wise decision</title>
+    <published>2025-05-03T18:31:10Z</published>
+    <updated>2025-05-03T18:31:10Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Willow and poplar catkins are floating everywhere in the
+        air throughout the city of Beijing.</p>
+      </div>
+    </content>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#6</id>
+    <title>Maitetsu (aka, Rail Romanesque)</title>
+    <published>2025-04-20T16:58:11Z</published>
+    <updated>2025-04-20T16:58:11Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Was cycling past the railway, when I heard the alert about
+        an approaching train.</p> <p>So I stopped to see what it would
+        be like, and it turned out to be just a tiny single-car
+        train.</p>
+      </div>
+    </content>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#5</id>
+    <title>Comments on SSSS.Dynazenon</title>
+    <published>2025-04-07T14:28:11Z</published>
+    <updated>2025-04-08T08:18:15Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>The blurring sense of dissonance between the ordinary and
+        extraordinary is truly compelling.</p> <p>The extent of damage
+        the kaiju causes to the world is never fully revealed, and the
+        protagonists are not tasked to protect.</p> <p>As for Yume, I
+        don&#8217;t really care if she embodies a kind of <q>traitless
+        trait</q>, but she&#8217;s so lovely.</p>
+        <div class="enclosure">
+          <img src="https://dynazenon.net/product/cd/ed/img/ed_jk.jpg"/>
+        </div>
+      </div>
+    </content>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#4</id>
+    <title>Transmogrification with unlimited spell</title>
+    <published>2025-03-31T14:14:17Z</published>
+    <updated>2025-03-31T14:14:17Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Got the unlimited spell perk and the circle of
+        transmogrification. Once I find an aiming spell modifier,
+        I&#8217;m invincible.</p> <p>Good news, my EB EE on Raymond
+        Chandler&#8217;s <i>The Long Goodbye</i> is approved.</p>
+      </div>
+    </content>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#3</id>
+    <title>Safari is smart</title>
+    <published>2025-03-27T10:34:42Z</published>
+    <updated>2025-03-27T10:34:42Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Safari handles atom feeds by attempting to open and
+        subscribe to it with an external RSS reader, ignoring the
+        <code><![CDATA[<?xml-stylesheet?>]]></code> directive.</p>
+        <p>I think it&#8217;s time to give JavaScript a try.</p>
+      </div>
+    </content>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#2</id>
+    <title>Some more XSLT for my site</title>
+    <published>2025-03-26T13:25:03Z</published>
+    <updated>2025-03-26T13:27:52Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Just decided to write some XSLT to transform atom feed to
+        valid HTML5 so it can be displayed in an
+        <code>iframe</code>.</p> <p>It feels more comfortable for me
+        than using JavaScript, unless I missed something.</p>
+      </div>
+    </content>
+  </entry>
+
+  <entry>
+    <id>tag:kekkan.org,2025:memoir#1</id>
+    <title>Somewhat a tough start</title>
+    <published>2025-03-25T22:50:29Z</published>
+    <updated>2025-03-25T22:50:29Z</updated>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Received a very low score on my first monthly test, getting
+        a 5 in Japanese. Lot of deadlines piling ahead.</p> <p>First
+        memoir in this feed, but I&#8217;m not sure exactly what to
+        say. I guess this will be it for now.</p>
+      </div>
+    </content>
+  </entry>
+</feed>

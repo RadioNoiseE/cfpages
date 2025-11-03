@@ -1,0 +1,155 @@
+@import "font.css";
+
+::selection {
+    background-color: #bdbdbd;
+    color: white;
+}
+
+body {
+    background-color: #f4f4f9;
+    display: flex;
+    font-family: LAT-SF, serif;
+    font-size: 1em;
+    justify-content: center;
+    line-height: 1.4;
+    z-index: 0;
+}
+
+body.idle {
+    overflow: hidden;
+}
+
+.frame {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2em 4em 1.4em 4em;
+    margin: 1em;
+}
+
+h1 {
+    text-align: center;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+p {
+    margin-block-end: .6em;
+    margin-block-start: .6em;
+}
+
+code {
+    background: #eeeeee;
+    border-radius: .25em;
+    font-family: LAT-MS, monospace;
+    padding: .125em .25em;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+@media only screen and (min-width: 64em) {
+    .content {
+        margin: auto;
+        max-width: 54em;
+    }
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.nav a {
+    margin: 0 10px;
+    position: relative;
+}
+
+.nav a::after {
+    content: '-';
+    position: absolute;
+    width: 20px;
+}
+
+.nav a:last-child::after {
+    content: normal;
+}
+
+@media only screen and (min-width: 64em) {
+    .article {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .column {
+        width: 46%;
+    }
+}
+
+.banner {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.icon {
+    border: 0;
+    height: 30px;
+}
+
+.css,
+.math,
+.ccby {
+    padding: 0 2px;
+}
+
+.atom,
+.mjax {
+    padding-left: 2px;
+    padding-right: 7px;
+}
+
+.copyright {
+    text-align: center;
+}
+
+.copyright p {
+    margin: 0;
+}
+
+#overlay {
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.6);
+    display: none;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+iframe {
+    background-color: white;
+    border: 1px solid;
+    display: none;
+    height: 420px;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    z-index: 2;
+}

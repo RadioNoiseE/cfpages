@@ -16,7 +16,7 @@
 
   -->
 
-  <xsl:output method="xml" encoding="utf-8" indent="no"
+  <xsl:output method="html" encoding="utf-8" indent="no"
               omit-xml-declaration="yes"/>
 
   <xsl:template name="space">
