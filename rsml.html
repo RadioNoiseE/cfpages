@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Apple macOS version 5.8.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="creator" content="RsML1">
+  <meta name="author" content="Jing Huang">
+  <meta name="pubdate" content="2025-01-21">
+  <title>RsML Namespace -- RnEs Structured Markup Language</title>
+  <link href="/favicon.ico" rel="icon">
+  <link href="/static/images/minami.jpg" rel="apple-touch-icon">
+  <link href="/style/article.css" rel="stylesheet">
+  <script src="/script/math.js"></script>
+  <script src="/script/listing.js" type="module"></script>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">RsML Namespace</h1>
+    <h2 class="subtitle">RnE’s Structured Markup Language</h2>
+    <div class="status">
+      <p>Published on 21 January 2025 by Jing Huang.</p>
+    </div>
+    <div class="abstract">
+      <p>This page describes the namespace for RsML, an XML schema for writing technical or non-technical documents. At
+      the present time RsML can be transformed into clean and semantically rich HTML5, while TeX output support is on
+      the roadmap<sup><a href="#f1">1</a></sup>.</p>
+    </div>
+    <nav id="lot">
+      <h2>Table of Contents</h2>
+      <div class="toc">
+        <ul>
+          <li>
+            <a href="#c1"><span class="chapno">1</span> <span class="content">RelaxNG Compact Schema</span></a>
+          </li>
+          <li>
+            <a href="#c2"><span class="chapno">2</span> <span class="content">XSLT 1.0 Style Sheet</span></a>
+            <ul class="toc">
+              <li>
+                <a href="#s2-1"><span class="secno">2.1</span> <span class="content">External Math Support</span></a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#c3"><span class="chapno">3</span> <span class="content">Cascading Style Sheet</span></a>
+          </li>
+          <li>
+            <a href="#c4"><span class="chapno">4</span> <span class="content">Other Resources</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <h2 id="c1">1. RelaxNG Compact Schema</h2>
+  <p>This is non-normative schema, and can be used for manuscript validating by <code>jing.jar</code> or Emacs
+  <code>nXML</code> mode. It can be converted to the XML syntax using <a href=
+  "https://relaxng.org/jclark/trang.html">Trang</a>.</p>
+  <h2 id="c2">2. XSLT 1.0 Style Sheet</h2>
+  <p>This is the transformation sheet for RsML written in XSLT 1.0 with compatibility in mind. Thus most
+  implementations for instance <code>libxslt</code> and most web browsers should be able to handle it.</p>
+  <div class="note">
+    <p>The idea for the current implementation of program listings is <em>borrowed</em> from LdBeth which renders line
+    numbers correctly in text-based web browsers like <code>w3m</code>. However it has poor performance when processing
+    very large listings as recursive templates are inevitably used.</p>
+  </div>
+  <h3 id="s2-1">2.1. External Math Support</h3>
+  <p>RsML supports inline and display equations. You can express any equations in TeX or Content MathML, and use
+  BlahTeXML or the modified version of David Carlisle’s <code>c2p.xsl</code> to convert it to Presentational
+  MathML.</p>
+  <p>The <code>web.xsl</code> style sheet processes <code>math</code> elements by simply stripping any XML namespaces
+  and extracting their <code>local-name()</code>. This allows equations to be written in theoretically any form, and
+  they will still work with an appropriate preprocesser.</p>
+  <h2 id="c3">3. Cascading Style Sheet</h2>
+  <p>This CSS style sheet is suitable for online presentation and for producing print output. Note that this contains
+  vendor specific CSS attributes. The web browser I used for testing is Safari.</p>
+  <h2 id="c4">4. Other Resources</h2>
+  <p>RsML is continuously maintained and developed at <a href="https://github.com/RadioNoiseE/rsml">GitHub</a>. You can
+  download the latest source there.</p>
+  <p>This page is written with RsML, with <code>web.xsl</code> style sheet applied by the browser you are currently
+  using.</p>
+  <footer>
+    <div class="footnotes">
+      <hr>
+      <div class="footnote">
+        <div class="footno">
+          <sup><a id="f1">1</a></sup>
+        </div>
+        <div class="footbody">
+          Which involves converting Content MathML into TeX.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
